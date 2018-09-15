@@ -10,7 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/bahrus/aggregator-fn.git"
   },
-  "author": "",
+  "dependencies": {
+    "xtal-latx": "0.0.27"
+  },
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "jiife": "0.0.5",
+    "tape": "^4.9.1",
+    "@types/tape": "4.2.32",
+    "xtal-test": "0.0.8"
+  },
+  "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/aggregator-fn/issues"
