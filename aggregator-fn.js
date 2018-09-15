@@ -1,6 +1,7 @@
 import { XtallatX } from 'xtal-latx/xtal-latx.js';
 import { define } from 'xtal-latx/define.js';
 import { destruct, getScript } from 'xtal-latx/destruct.js';
+import { debounce } from 'xtal-latx/debounce.js';
 const input = 'input';
 export class AggregatorFn extends XtallatX(HTMLElement) {
     constructor() {
@@ -13,11 +14,11 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
     }
     get input() {
         return this._input;
-        this.aggregate();
     }
     set input(val) {
         this._input = val;
-        this.aggregate();
+        //this.aggregate();
+        this._debouncer();
     }
     get value() {
         return this._value;
@@ -33,7 +34,8 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
     }
     set aggregator(val) {
         this._aggregator = val;
-        this.aggregate();
+        //this.aggregate();
+        this._debouncer();
     }
     aggregate() {
         if (this._input === undefined || this._aggregator === undefined || this._aggregator === null)
@@ -51,6 +53,9 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(['disabled', input]);
+        this._debouncer = debounce((stateUpdate) => {
+            this.aggregate();
+        }, 50);
         this.getS();
     }
     getS() {

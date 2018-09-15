@@ -10,6 +10,16 @@
             </aggregator-fn>
 
             <script type="module" src="../aggregator-fn.js"></script>
+            <script>
+                function updateAgg(){
+                    const agg = document.querySelector('aggregator-fn');
+                    agg.a = 10;
+                    agg.b = 20;
+                    agg.c = 11;
+                    console.log(agg.value);
+                }
+            </script>
+            <button onclick="updateAgg()">Click Test</button>
         </div>
     </body>
 </html>
