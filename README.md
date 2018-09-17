@@ -72,7 +72,7 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
         <p-d on="fetch-complete" to="{input}"></p-d>
         <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
         
-        <script type="module" src="https://unpkg.com/aggregator-fn@0.0.4/aggregator-fn.js?module"></script>
+        <script type="module" src="https://unpkg.com/aggregator-fn@0.0.5/aggregator-fn.js?module"></script>
         <script type="module" src="https://unpkg.com/xtal-fetch@0.0.47/xtal-fetch.js"></script>
         <script type="module" src="https://unpkg.com/p-d.p-u@0.0.69/p-d.p-u.js"></script>
         <script type="module" src="https://unpkg.com/xtal-json-editor@0.0.29/xtal-json-editor.js"></script>
