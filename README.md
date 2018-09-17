@@ -23,6 +23,7 @@ does the following:
 1)  Dynamically attaches properties to the aggregator-fn element for each of the function arguments -- "operation" and "expression" in this case.
 2)  Any time any of the property values changes, the aggregator function is evaluated (allowing for some debouncing), and the result is stored in the element's value property.  An event, "value-changed" is fired every time the value changes.
 
+
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 
 ```html
@@ -96,7 +97,7 @@ Depending on which tool / server configururation you are using to serve your pag
             <!-- End Polyfills -->
 ```
 
-Here we are using "nomodule" with the assumption that only IE11 activates such scripts.  This may be slightly problematic if you are targeting Edge users who are yet upgraded to Edge 17.
+Here we are using "nomodule" with the assumption that only IE11 activates such scripts.  This may be slightly problematic if you are targeting Edge users who have yet to upgrade Edge 17, for example.
 
 # Install the Polymer-CLI
 
