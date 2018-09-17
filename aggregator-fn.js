@@ -71,13 +71,29 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
             destruct(this, arg);
         });
         const inner = this._script.innerHTML;
+        const count = AggregatorFn._count++;
         console.log(inner);
-        const temp = eval(`({
-            fn: function(){return ${inner}}
-        })
-        `);
-        this.aggregator = temp.fn();
+        const fn = `
+var af = customElements.get('${AggregatorFn.is}');
+af['fn_' + ${count}] = ${inner}
+        `;
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.innerHTML = fn;
+        document.head.appendChild(script);
+        this.attachAggregator(count);
+    }
+    attachAggregator(count) {
+        const aggregator = AggregatorFn['fn_' + count];
+        if (aggregator === undefined) {
+            setTimeout(() => {
+                this.attachAggregator(count);
+            }, 10);
+            return;
+        }
+        this.aggregator = aggregator;
     }
 }
+AggregatorFn._count = 0;
 define(AggregatorFn);
 //# sourceMappingURL=aggregator-fn.js.map
