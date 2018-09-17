@@ -2,14 +2,31 @@
 
 \<aggregator-fn\> is a non-visual custom element that aggregates properties together using an inline JS expression.
 
-This component is designed for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://www.webcomponents.org/element/p-d.p-u).
+This component is designed to provide an alternative to Polymer's template string interpolation.  It is most useful for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://www.webcomponents.org/element/p-d.p-u).
 
-One thing Polymer's powerful binding mechanism brings to the table, that is useful to isolate as a standalone component, is an aggregator, or expression evaluator component.  The primary motivator for this component is formulating url's out of a form -- declaratively.
+The initial motivator for this component is being able to build url's from of a form consisting of input elements -- declaratively.
+
+## Syntax:
+
+```html
+<aggregator-fn>
+    <script nomodule>
+        ({operation, expression}) => {
+            return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+        }  
+    </script>
+</aggregator-fn>
+```
+
+does the following:
+
+1)  Dynamically attaches properties to the aggregator-fn element for each of the function arguments -- "operation" and "expression" in this case.
+2)  Any time any of the property values changes, the aggregator function is evaluated (allowing for some debouncing), and the result is stored in the element's value property.  An event, "value-changed" is fired every time the value changes.
 
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 
 ```html
-    <div>
+    <div style="height:600px">
         <label for="operation">Operation:</label>
         <input type="text" name="operation" value="derive">
         <p-d on="input" to="aggregator-fn{operation}"></p-d>
