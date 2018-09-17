@@ -69,10 +69,9 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
         sInf.args.forEach(arg => {
             destruct(this, arg);
         });
+        console.log(this._script.innerHTML);
         const temp = eval(`({
-            fn: function(){
-                ${this._script.innerHTML}
-            }
+            fn: function(){return ${this._script.innerHTML}}
         })
         `);
         this.aggregator = temp.fn();

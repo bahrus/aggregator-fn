@@ -1,0 +1,42 @@
+<html>
+    <body>
+        <div>
+            <aggregator-fn>
+                <script nomodule>
+                    ({a, b, c}) => {
+                        return a + b + c;
+                    }
+                </script>
+            </aggregator-fn>
+
+            <script>
+                function updateAgg(){
+                    const agg = document.querySelector('aggregator-fn');
+                    agg.a = 10;
+                    agg.b = 20;
+                    agg.c = 11;
+                    console.log(agg.value);
+                }
+            </script>
+            <button onclick="updateAgg()">Click Test</button>
+
+            <aggregator-fn>
+                <script nomodule>
+                    ({a, b, c}) => {
+                        const x = a^2;
+                        const y = b^2;
+                        const z = c^2;
+                        return x + y + z;
+                    }
+                </script>
+            </aggregator-fn>
+            <!-- For Retro Browsers -->
+            <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+            <!-- End Polyfills -->
+            <script nomodule src="../IE11-polyfill.js"></script>
+            <script nomodule src="../node_modules/xtal-latx/destruct.IE11.js"></script>
+            <script src="../aggregator-fn.iife.js"></script>
+            
+        </div>
+    </body>
+</html>

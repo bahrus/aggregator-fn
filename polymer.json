@@ -1,0 +1,21 @@
+{
+  "sources":[
+    "aggregator-fn.js",
+    "aggregator-fn.iife.js"
+  ],
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  },
+  "builds":[
+    {
+      "name": "ES5",
+      "js": {"minify": false, "compile": true}
+    },
+    {
+      "name": "ES6",
+      "js": {"minify": true, "compile": false}
+    }    
+  ]
+}
