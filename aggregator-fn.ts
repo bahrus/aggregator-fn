@@ -35,7 +35,7 @@ export class AggregatorFn extends XtallatX(HTMLElement){
         this.aggregate();
     }
     aggregate(){
-        if(this._input === undefined || this._aggregator === undefined || this._aggregator === null) return;
+        if(this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled) return; 
         this.value = this._aggregator(this._input); 
     }
     attributeChangedCallback(name: string, oldVal: string, newVal: string) {
@@ -45,6 +45,7 @@ export class AggregatorFn extends XtallatX(HTMLElement){
                 break;
         }
         super.attributeChangedCallback(name, oldVal, newVal);
+        this.aggregate();
     }
     connectedCallback() {
         this.style.display = 'none';
