@@ -4,7 +4,7 @@
 
 This component is designed to provide an alternative to Polymer's template string interpolation.  It is most useful for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://www.webcomponents.org/element/p-d.p-u).
 
-The initial motivator for this component is being able to build url's from of a form consisting of input elements -- declaratively.
+The initial motivator for this component is being able to build url's from a form consisting of input elements -- declaratively.
 
 ## Syntax:
 
@@ -27,7 +27,7 @@ does the following:
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 
 ```html
-    <div style="height:600px">
+    <div>
         <label for="operation">Operation:</label>
         <input type="text" name="operation" value="derive">
         <p-d on="input" to="aggregator-fn{operation}"></p-d>
@@ -53,7 +53,7 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 ```
 <custom-element-demo>
   <template>
-      <div>
+      <div style="height:600px">
         <label for="operation">Operation:</label>
         <input type="text" name="operation" value="derive">
         <p-d on="input" to="aggregator-fn{operation}"></p-d>
