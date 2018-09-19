@@ -1,6 +1,7 @@
 import {XtallatX} from 'xtal-latx/xtal-latx.js';
 import {define} from 'xtal-latx/define.js';
 import {destruct, getScript} from 'xtal-latx/destruct.js';
+import {attachScriptFn, getDynScript} from 'xtal-latx/attachScriptFn.js';
 
 const input = 'input';
 export class AggregatorFn extends XtallatX(HTMLElement){
@@ -51,19 +52,11 @@ export class AggregatorFn extends XtallatX(HTMLElement){
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(['disabled', input]);
-        this.getS();
+        getDynScript(this, () =>{
+            this.eval();
+        })
     }
     _script!: HTMLScriptElement;
-    getS(){
-        this._script = this.querySelector('script') as HTMLScriptElement;
-        if(!this._script){
-            setTimeout(() => {
-                this.getS();
-            }, 10);
-            return;
-        }
-        this.eval();
-    }
     eval(){
         const sInf = getScript(this._script);
         
@@ -72,28 +65,12 @@ export class AggregatorFn extends XtallatX(HTMLElement){
             destruct(this, arg);
         });
         const inner = this._script.innerHTML;
-        const count = AggregatorFn._count++;
-        console.log(inner);
-        const fn = `
-var af = customElements.get('${AggregatorFn.is}');
-af['fn_' + ${count}] = ${inner}
-        `
-        
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.innerHTML = fn;
-        document.head.appendChild(script);
-        this.attachAggregator(count);
+        const body = `
+const __fn = ${inner};
+`;
+        attachScriptFn(AggregatorFn.is, this, 'aggregator', body);
+
     }
-    attachAggregator(count: number){
-        const aggregator = (<any>AggregatorFn)['fn_' + count];
-        if(aggregator === undefined){
-            setTimeout(() => {
-                this.attachAggregator(count);
-            }, 10);
-            return;
-        }
-        this.aggregator = aggregator;
-    }
+
 }
 define(AggregatorFn);

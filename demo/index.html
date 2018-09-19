@@ -12,15 +12,13 @@
             <input disabled type="text" name="operation" value="derive">
             <p-d on="input" to="aggregator-fn{operation}"></p-d>
             <label for="expression">Expression:</label>
-            <input type="text" name="expression" value="x^2">
-            <p-d disabled on="input" to="aggregator-fn{expression}"></p-d>
-            <aggregator-fn disabled>
-                <script nomodule>
-                    ({operation, expression}) => {
-                        return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-                    }  
-                </script>
-            </aggregator-fn>
+            <input disabled type="text" name="expression" value="x^2">
+            <p-d  on="input" to="aggregator-fn{expression}"></p-d>
+            <aggregator-fn disabled><script nomodule>
+            ({operation, expression}) => {
+                return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+            }  
+            </script></aggregator-fn>
             <p-d on="value-changed" to="{href}"></p-d>
             <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
             <p-d on="fetch-complete" to="{input}"></p-d>
