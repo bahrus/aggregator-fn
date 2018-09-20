@@ -15,13 +15,11 @@ The initial motivator for this component is being able to build url's from a for
 ## Syntax:
 
 ```html
-<aggregator-fn>
-    <script nomodule>
-        ({operation, expression}) => {
-            return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-        }  
-    </script>
-</aggregator-fn>
+<aggregator-fn><script nomodule>
+    ({operation, expression}) => {
+        return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+    }  
+</script></aggregator-fn>
 ```
 
 does the following:
@@ -40,13 +38,11 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
         <label for="expression">Expression:</label>
         <input type="text" name="expression" value="x^2">
         <p-d on="input" to="aggregator-fn{expression}"></p-d>
-        <aggregator-fn>
-            <script nomodule>
-                ({operation, expression}) => {
-                    return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-                }  
-            </script>
-        </aggregator-fn>
+        <aggregator-fn><script nomodule>
+            ({operation, expression}) => {
+                return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+            }  
+        </script></aggregator-fn>
         <p-d on="value-changed" to="{href}"></p-d>
         <xtal-fetch fetch></xtal-fetch>
         <p-d on="fetch-complete" to="{input}"></p-d>
@@ -66,13 +62,11 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
             <label for="expression">Expression:</label>
             <input type="text" name="expression" value="x^2">
             <p-d disabled on="input" to="aggregator-fn{expression}"></p-d>
-            <aggregator-fn disabled>
-                <script nomodule>
-                    ({operation, expression}) => {
-                        return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-                    }  
-                </script>
-            </aggregator-fn>
+            <aggregator-fn><script nomodule>
+                ({operation, expression}) => {
+                    return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+                }  
+            </script></aggregator-fn>
             <p-d on="value-changed" to="{href}"></p-d>
             <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
             <p-d on="fetch-complete" to="{input}"></p-d>
