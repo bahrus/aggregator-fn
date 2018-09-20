@@ -1,4 +1,10 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/aggreator-fn)
+
+<a href="https://nodei.co/npm/aggregator-fn/"><img src="https://nodei.co/npm/aggregator-fn.png"></a>
+
 # aggregator-fn
+
+NB:  aggregator-fn shares quite a bit of code with [litter-g](https://www.webcomponents.org/element/litter-g), as they both tackle similar problems.  It would be natural to use the two together (without much additional overhead.)
 
 \<aggregator-fn\> is a non-visual custom element that aggregates properties together using an inline JS expression.
 
@@ -98,6 +104,8 @@ Depending on which tool / server configururation you are using to serve your pag
 ```
 
 Here we are using "nomodule" with the assumption that only IE11 activates such scripts.  This may be slightly problematic if you are targeting Edge users who have yet to upgrade Edge 17, for example.
+
+
 
 # Install the Polymer-CLI
 
