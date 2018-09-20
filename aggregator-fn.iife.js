@@ -165,6 +165,46 @@ function XtallatX(superClass) {
         }
     };
 }
+function attachScriptFn(tagName, target, prop, body) {
+    const constructor = customElements.get(tagName);
+    const count = constructor._count++;
+    const script = document.createElement('script');
+    if (supportsStaticImport()) {
+        script.type = 'module';
+    }
+    script.innerHTML = `(function () {
+${body}
+const constructor = customElements.get('${tagName}');
+constructor['fn_' + ${count}] = __fn;
+})();
+`;
+    document.head.appendChild(script);
+    attachFn(constructor, count, target, prop);
+}
+function supportsStaticImport() {
+    const script = document.createElement('script');
+    return 'noModule' in script;
+}
+function attachFn(constructor, count, target, prop) {
+    const Fn = constructor['fn_' + count];
+    if (Fn === undefined) {
+        setTimeout(() => {
+            attachFn(constructor, count, target, prop);
+        }, 10);
+        return;
+    }
+    target[prop] = Fn;
+}
+function getDynScript(el, callBack) {
+    el._script = el.querySelector('script');
+    if (!el._script) {
+        setTimeout(() => {
+            getDynScript(el, callBack);
+        }, 10);
+        return;
+    }
+    callBack();
+}
 const input = 'input';
 class AggregatorFn extends XtallatX(HTMLElement) {
     constructor() {
@@ -215,17 +255,9 @@ class AggregatorFn extends XtallatX(HTMLElement) {
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(['disabled', input]);
-        this.getS();
-    }
-    getS() {
-        this._script = this.querySelector('script');
-        if (!this._script) {
-            setTimeout(() => {
-                this.getS();
-            }, 10);
-            return;
-        }
-        this.eval();
+        getDynScript(this, () => {
+            this.eval();
+        });
     }
     eval() {
         const sInf = getScript(this._script);
@@ -235,8 +267,6 @@ class AggregatorFn extends XtallatX(HTMLElement) {
             destruct(this, arg);
         });
         const inner = this._script.innerHTML;
-        //const count = AggregatorFn._count++;
-        console.log(inner);
         const body = `
 const __fn = ${inner};
 `;
