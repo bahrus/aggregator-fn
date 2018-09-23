@@ -221,6 +221,51 @@
     );
   }
 
+  function attachScriptFn(tagName, target, prop, body) {
+    var constructor = customElements.get(tagName);
+    var count = constructor._count++;
+    var script = document.createElement('script');
+
+    if (supportsStaticImport()) {
+      script.type = 'module';
+    }
+
+    script.innerHTML = "(function () {\n".concat(body, "\nconst constructor = customElements.get('").concat(tagName, "');\nconstructor['fn_' + ").concat(count, "] = __fn;\n})();\n");
+    document.head.appendChild(script);
+    attachFn(constructor, count, target, prop);
+  }
+
+  function supportsStaticImport() {
+    var script = document.createElement('script');
+    return 'noModule' in script;
+  }
+
+  function attachFn(constructor, count, target, prop) {
+    var Fn = constructor['fn_' + count];
+
+    if (Fn === undefined) {
+      setTimeout(function () {
+        attachFn(constructor, count, target, prop);
+      }, 10);
+      return;
+    }
+
+    target[prop] = Fn;
+  }
+
+  function getDynScript(el, callBack) {
+    el._script = el.querySelector('script');
+
+    if (!el._script) {
+      setTimeout(function () {
+        getDynScript(el, callBack);
+      }, 10);
+      return;
+    }
+
+    callBack();
+  }
+
   var input = 'input';
 
   var AggregatorFn =
@@ -241,6 +286,7 @@
       key: "aggregate",
       value: function aggregate() {
         if (this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled) return;
+        this._input.__this = this;
         this.value = this._aggregator(this._input);
       }
     }, {
@@ -288,13 +334,33 @@
         var sInf = getScript(this._script);
         if (sInf === null) return;
         sInf.args.forEach(function (arg) {
-          destruct(_this6, arg);
+          if (arg !== '__this') destruct(_this6, arg);
         });
-        var inner = this._script.innerHTML; //const count = AggregatorFn._count++;
-
+        var inner = this._script.innerHTML;
+        var count = AggregatorFn._count++;
         console.log(inner);
-        var body = "\nconst __fn = ".concat(inner, ";\n");
-        attachScriptFn(AggregatorFn.is, this, 'aggregator', body);
+        var fn = "\nvar af = customElements.get('".concat(AggregatorFn.is, "');\naf['fn_' + ").concat(count, "] = ").concat(inner, "\n        ");
+        var script = document.createElement('script');
+        script.type = 'module';
+        script.innerHTML = fn;
+        document.head.appendChild(script);
+        this.attachAggregator(count);
+      }
+    }, {
+      key: "attachAggregator",
+      value: function attachAggregator(count) {
+        var _this7 = this;
+
+        var aggregator = AggregatorFn['fn_' + count];
+
+        if (aggregator === undefined) {
+          setTimeout(function () {
+            _this7.attachAggregator(count);
+          }, 10);
+          return;
+        }
+
+        this.aggregator = aggregator;
       }
     }, {
       key: "input",

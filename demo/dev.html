@@ -18,7 +18,8 @@
             <button>Click Test</button>
             <aggregator-fn>
                 <script nomodule>
-                    ({a, b, c}) => {
+                    ({a, b, c, __this}) => {
+                        console.log(__this);
                         return a + b + c;
                     }
                 </script>

@@ -241,6 +241,7 @@ class AggregatorFn extends XtallatX(HTMLElement) {
     aggregate() {
         if (this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled)
             return;
+        this._input.__this = this;
         this.value = this._aggregator(this._input);
     }
     attributeChangedCallback(name, oldVal, newVal) {
@@ -255,22 +256,48 @@ class AggregatorFn extends XtallatX(HTMLElement) {
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(['disabled', input]);
-        getDynScript(this, () => {
-            this.eval();
-        });
+        this.getS();
+    }
+    getS() {
+        this._script = this.querySelector('script');
+        if (!this._script) {
+            setTimeout(() => {
+                this.getS();
+            }, 10);
+            return;
+        }
+        this.eval();
     }
     eval() {
         const sInf = getScript(this._script);
         if (sInf === null)
             return;
         sInf.args.forEach(arg => {
-            destruct(this, arg);
+            if (arg !== '__this')
+                destruct(this, arg);
         });
         const inner = this._script.innerHTML;
-        const body = `
-const __fn = ${inner};
-`;
-        attachScriptFn(AggregatorFn.is, this, 'aggregator', body);
+        const count = AggregatorFn._count++;
+        console.log(inner);
+        const fn = `
+var af = customElements.get('${AggregatorFn.is}');
+af['fn_' + ${count}] = ${inner}
+        `;
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.innerHTML = fn;
+        document.head.appendChild(script);
+        this.attachAggregator(count);
+    }
+    attachAggregator(count) {
+        const aggregator = AggregatorFn['fn_' + count];
+        if (aggregator === undefined) {
+            setTimeout(() => {
+                this.attachAggregator(count);
+            }, 10);
+            return;
+        }
+        this.aggregator = aggregator;
     }
 }
 AggregatorFn._count = 0;

@@ -1,7 +1,6 @@
 import { XtallatX } from "./node_modules/xtal-latx/xtal-latx.js";
 import { define } from "./node_modules/xtal-latx/define.js";
 import { destruct, getScript } from "./node_modules/xtal-latx/destruct.js";
-import { attachScriptFn } from "./node_modules/xtal-latx/attachScriptFn.js";
 var input = 'input';
 export var AggregatorFn =
 /*#__PURE__*/
@@ -21,6 +20,7 @@ function (_XtallatX) {
     key: "aggregate",
     value: function aggregate() {
       if (this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled) return;
+      this._input.__this = this;
       this.value = this._aggregator(this._input);
     }
   }, {
@@ -68,13 +68,33 @@ function (_XtallatX) {
       var sInf = getScript(this._script);
       if (sInf === null) return;
       sInf.args.forEach(function (arg) {
-        destruct(_this3, arg);
+        if (arg !== '__this') destruct(_this3, arg);
       });
-      var inner = this._script.innerHTML; //const count = AggregatorFn._count++;
-
+      var inner = this._script.innerHTML;
+      var count = AggregatorFn._count++;
       console.log(inner);
-      var body = "\nconst __fn = ".concat(inner, ";\n");
-      attachScriptFn(AggregatorFn.is, this, 'aggregator', body);
+      var fn = "\nvar af = customElements.get('".concat(AggregatorFn.is, "');\naf['fn_' + ").concat(count, "] = ").concat(inner, "\n        ");
+      var script = document.createElement('script');
+      script.type = 'module';
+      script.innerHTML = fn;
+      document.head.appendChild(script);
+      this.attachAggregator(count);
+    }
+  }, {
+    key: "attachAggregator",
+    value: function attachAggregator(count) {
+      var _this4 = this;
+
+      var aggregator = AggregatorFn['fn_' + count];
+
+      if (aggregator === undefined) {
+        setTimeout(function () {
+          _this4.attachAggregator(count);
+        }, 10);
+        return;
+      }
+
+      this.aggregator = aggregator;
     }
   }, {
     key: "input",

@@ -99,7 +99,20 @@ Depending on which tool / server configururation you are using to serve your pag
 
 Here we are using "nomodule" with the assumption that only IE11 activates such scripts.  This may be slightly problematic if you are targeting Edge users who have yet to upgrade Edge 17, for example.
 
+## Accessing the custom element itself
 
+In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, __this:
+
+```html
+<aggregator-fn>
+    <script nomodule>
+        ({a, b, c, __this}) => {
+            console.log(__this);
+            return a + b + c;
+        }
+    </script>
+</aggregator-fn>
+```
 
 # Install the Polymer-CLI
 
