@@ -72,7 +72,6 @@ function (_XtallatX) {
       });
       var inner = this._script.innerHTML;
       var count = AggregatorFn._count++;
-      console.log(inner);
       var fn = "\nvar af = customElements.get('".concat(AggregatorFn.is, "');\naf['fn_' + ").concat(count, "] = ").concat(inner, "\n        ");
       var script = document.createElement('script');
       script.type = 'module';

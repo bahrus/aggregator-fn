@@ -278,7 +278,6 @@ class AggregatorFn extends XtallatX(HTMLElement) {
         });
         const inner = this._script.innerHTML;
         const count = AggregatorFn._count++;
-        console.log(inner);
         const fn = `
 var af = customElements.get('${AggregatorFn.is}');
 af['fn_' + ${count}] = ${inner}

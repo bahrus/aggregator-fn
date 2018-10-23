@@ -82,7 +82,7 @@ af['fn_' + ${count}] = ${inner}
         const script = document.createElement('script');
         script.type = 'module';
         script.innerHTML = fn;
-        document.head.appendChild(script);
+        document.head!.appendChild(script);
         this.attachAggregator(count);
     }
     attachAggregator(count: number){
