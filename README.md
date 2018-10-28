@@ -56,28 +56,42 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 <custom-element-demo>
   <template>
     <div style="height:600px">
-            <label for="operation">Operation:</label>
-            <input disabled type="text" name="operation" value="derive">
-            <p-d on="input" to="aggregator-fn{operation}"></p-d>
-            <label for="expression">Expression:</label>
-            <input type="text" name="expression" value="x^2">
-            <p-d disabled on="input" to="aggregator-fn{expression}"></p-d>
-            <aggregator-fn><script nomodule>
-                ({operation, expression}) => {
+        <!-- ================    HTML Markup =====================-->
+        <!-- Specify Mathematical Operation -->
+        <label for="operation">Operation:</label>
+        <input disabled type="text" name="operation" value="derive">
+        <!-- Pass down Operation to aggregator-fn when operation changes-->
+        <p-d on="input" to="aggregator-fn{operation}"></p-d>
+        <!-- Specify Mathematical Expression-->
+        <label for="expression">Expression:</label>
+        <input disabled type="text" name="expression" value="x^2">
+        <!-- Pass down Expression to aggregator-fn when expression changes -->
+        <p-d on="input" to="aggregator-fn{expression}"></p-d>
+        <!-- Combine Operation and Expression into URL Newton Microservice Api understands-->
+        <aggregator-fn disabled>
+            <script nomodule>
+                ({ operation, expression }) => {
                     return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
                 }  
-            </script></aggregator-fn>
-            <p-d on="value-changed" to="{href}"></p-d>
-            <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
-            <p-d on="fetch-complete" to="{input}"></p-d>
-            <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
-            
-            <script type="module" src="https://unpkg.com/aggregator-fn@0.0.7/aggregator-fn.js?module"></script>
-            <script type="module" src="https://unpkg.com/xtal-fetch@0.0.47/xtal-fetch.js"></script>
-            <script type="module" src="https://unpkg.com/p-d.p-u@0.0.69/p-d.p-u.js"></script>
-            <script type="module" src="https://unpkg.com/xtal-json-editor@0.0.29/xtal-json-editor.js"></script>
-        </div>
-
+            </script>
+        </aggregator-fn>
+        <!-- Pass down url calculated by aggregator-fn to xtal-fetch's href property-->
+        <p-d on="value-changed" to="{href}"></p-d>
+        <!-- Make fetch call to Newton Microservice Api -->
+        <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
+        <!-- Pass results of fetch to Json Viewer -->
+        <p-d on="fetch-complete" to="{input}"></p-d>
+        <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
+        
+        <!-- ========================  Script Refs ========================== -->
+        <!-- Polyfills Needed for retro browsers -->
+        <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+        <!-- End Polyfills -->
+        <script type="module" src="https://cdn.jsdelivr.net/npm/aggregator-fn@0.0.11/aggregator-fn.iife.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-fetch@0.0.47/xtal-fetch.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.71/p-d.p-u.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-json-editor@0.0.29/xtal-json-editor.js"></script>
+    </div>
     </template>
 </custom-element-demo>
 ```
