@@ -18,9 +18,7 @@ The initial motivator for this component is being able to build url's from a for
 
 ```html
 <aggregator-fn><script nomodule>
-    ({operation, expression}) => {
-        return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-    }  
+    ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
 </script></aggregator-fn>
 ```
 
@@ -36,18 +34,16 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
     <div>
         <label for="operation">Operation:</label>
         <input type="text" name="operation" value="derive">
-        <p-d on="input" to="aggregator-fn{operation}"></p-d>
+        <p-d on="input" to="aggregator-fn" prop="operation" m="1"></p-d>
         <label for="expression">Expression:</label>
         <input type="text" name="expression" value="x^2">
-        <p-d on="input" to="aggregator-fn{expression}"></p-d>
+        <p-d on="input" prop="expression"></p-d>
         <aggregator-fn><script nomodule>
-            ({operation, expression}) => {
-                return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-            }  
+            ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
-        <p-d on="value-changed" to="{href}"></p-d>
+        <p-d on="value-changed" prop="href"></p-d>
         <xtal-fetch fetch></xtal-fetch>
-        <p-d on="fetch-complete" to="{input}"></p-d>
+        <p-d on="fetch-complete" prop="input"></p-d>
         <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
         
     </div>
