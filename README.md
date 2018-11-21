@@ -2,6 +2,8 @@
 
 <a href="https://nodei.co/npm/aggregator-fn/"><img src="https://nodei.co/npm/aggregator-fn.png"></a>
 
+<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/aggregator-fn@0.0.13/dist/aggregator-fn.iife.min.js?compression=gzip">
+
 # aggregator-fn
 
 NB:  aggregator-fn shares quite a bit of code with [litter-g](https://www.webcomponents.org/element/litter-g), as they both tackle similar problems.  It would be natural to use the two together (without much additional overhead.)
@@ -61,35 +63,31 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
         <label for="operation">Operation:</label>
         <input disabled type="text" name="operation" value="derive">
         <!-- Pass down Operation to aggregator-fn when operation changes-->
-        <p-d on="input" to="aggregator-fn{operation}"></p-d>
+        <p-d on="input" to="aggregator-fn" prop="operation"></p-d>
         <!-- Specify Mathematical Expression-->
         <label for="expression">Expression:</label>
         <input disabled type="text" name="expression" value="x^2">
         <!-- Pass down Expression to aggregator-fn when expression changes -->
-        <p-d on="input" to="aggregator-fn{expression}"></p-d>
+        <p-d on="input" prop="expression"></p-d>
         <!-- Combine Operation and Expression into URL Newton Microservice Api understands-->
-        <aggregator-fn disabled>
-            <script nomodule>
-                ({ operation, expression }) => {
-                    return `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-                }  
-            </script>
-        </aggregator-fn>
+        <aggregator-fn disabled><script nomodule>
+            ({ operation, expression }) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+        </script></aggregator-fn>
         <!-- Pass down url calculated by aggregator-fn to xtal-fetch's href property-->
-        <p-d on="value-changed" to="{href}"></p-d>
+        <p-d on="value-changed" prop="href"></p-d>
         <!-- Make fetch call to Newton Microservice Api -->
         <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
         <!-- Pass results of fetch to Json Viewer -->
-        <p-d on="fetch-complete" to="{input}"></p-d>
+        <p-d on="fetch-complete" prop="input"></p-d>
         <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
         
         <!-- ========================  Script Refs ========================== -->
-        <!-- Polyfills Needed for retro browsers -->
+        <!-- Polyfills Needed for MS browsers -->
         <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
         <!-- End Polyfills -->
         <script type="module" src="https://cdn.jsdelivr.net/npm/aggregator-fn@0.0.11/aggregator-fn.iife.js"></script>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-fetch@0.0.47/xtal-fetch.js"></script>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.71/p-d.p-u.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-fetch@0.0.52/xtal-fetch.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.82/dist/p-d.iife.js"></script>
         <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-json-editor@0.0.29/xtal-json-editor.js"></script>
     </div>
     </template>

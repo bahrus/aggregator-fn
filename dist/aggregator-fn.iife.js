@@ -19,7 +19,8 @@ const debounce = (fn, time) => {
 };
 function getScript(srcScript) {
     const inner = srcScript.innerHTML.trim();
-    if (inner.startsWith('(')) {
+    const trEq = 'tr = ';
+    if (inner.startsWith('(') || inner.startsWith(trEq)) {
         const ied = self['xtal_latx_ied']; //IE11
         if (ied !== undefined) {
             return ied(inner);
@@ -27,7 +28,7 @@ function getScript(srcScript) {
         else {
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
-            let lhs = inner.substr(0, iFatArrowPos);
+            let lhs = inner.substr(0, iFatArrowPos).replace(trEq, '').trim();
             c2del.forEach(t => lhs = lhs.replace(t, ''));
             const rhs = inner.substr(iFatArrowPos + 2);
             return {
@@ -48,7 +49,7 @@ function destruct(target, prop, megaProp = 'input') {
     if (!debouncer) {
         debouncer = debouncers[megaProp] = debounce(() => {
             target[megaProp] = Object.assign({}, target[megaProp]);
-        }, 10);
+        }, 10); //use task sceduler?
     }
     Object.defineProperty(target, prop, {
         get: function () {
@@ -165,14 +166,16 @@ function XtallatX(superClass) {
         }
     };
 }
-function attachScriptFn(tagName, target, prop, body) {
+function attachScriptFn(tagName, target, prop, body, imports) {
     const constructor = customElements.get(tagName);
     const count = constructor._count++;
     const script = document.createElement('script');
     if (supportsStaticImport()) {
         script.type = 'module';
     }
-    script.innerHTML = `(function () {
+    script.innerHTML = `
+${imports}
+(function () {
 ${body}
 const constructor = customElements.get('${tagName}');
 constructor['fn_' + ${count}] = __fn;
