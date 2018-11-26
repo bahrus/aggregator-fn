@@ -65,14 +65,15 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
         this.eval();
     }
     eval() {
-        const sInf = getScript(this._script);
+        const ig = 'fn = ';
+        const sInf = getScript(this._script, ig);
         if (sInf === null)
             return;
         sInf.args.forEach(arg => {
             if (arg !== '__this')
                 destruct(this, arg);
         });
-        const inner = this._script.innerHTML;
+        const inner = this._script.innerHTML.trim().replace(ig, '');
         const count = AggregatorFn._count++;
         const fn = `
 var af = customElements.get('${AggregatorFn.is}');

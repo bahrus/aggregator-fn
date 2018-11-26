@@ -26,10 +26,10 @@
     };
   };
 
-  function getScript(srcScript) {
-    var inner = srcScript.innerHTML.trim();
+  function getScript(srcScript, ignore) {
+    var inner = srcScript.innerHTML.trim(); //const trEq = 'tr = ';
 
-    if (inner.startsWith('(')) {
+    if (inner.startsWith('(') || inner.startsWith(ignore)) {
       var ied = self['xtal_latx_ied']; //IE11
 
       if (ied !== undefined) {
@@ -37,7 +37,7 @@
       } else {
         var iFatArrowPos = inner.indexOf('=>');
         var c2del = ['(', ')', '{', '}'];
-        var lhs = inner.substr(0, iFatArrowPos);
+        var lhs = inner.substr(0, iFatArrowPos).replace(ignore, '').trim();
         c2del.forEach(function (t) {
           return lhs = lhs.replace(t, '');
         });
@@ -63,7 +63,7 @@
     if (!debouncer) {
       debouncer = debouncers[megaProp] = debounce(function () {
         target[megaProp] = Object.assign({}, target[megaProp]);
-      }, 10);
+      }, 10); //use task sceduler?
     }
 
     Object.defineProperty(target, prop, {
@@ -101,7 +101,7 @@
           var _this2;
 
           babelHelpers.classCallCheck(this, _class);
-          _this2 = babelHelpers.possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+          _this2 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(_class).apply(this, arguments));
           _this2._evCount = {};
           return _this2;
         }
@@ -221,7 +221,7 @@
     );
   }
 
-  function attachScriptFn(tagName, target, prop, body) {
+  function attachScriptFn(tagName, target, prop, body, imports) {
     var constructor = customElements.get(tagName);
     var count = constructor._count++;
     var script = document.createElement('script');
@@ -230,7 +230,7 @@
       script.type = 'module';
     }
 
-    script.innerHTML = "(function () {\n".concat(body, "\nconst constructor = customElements.get('").concat(tagName, "');\nconstructor['fn_' + ").concat(count, "] = __fn;\n})();\n");
+    script.innerHTML = "\n".concat(imports, "\n(function () {\n").concat(body, "\nconst constructor = customElements.get('").concat(tagName, "');\nconstructor['fn_' + ").concat(count, "] = __fn;\n})();\n");
     document.head.appendChild(script);
     attachFn(constructor, count, target, prop);
   }
@@ -277,7 +277,7 @@
       var _this4;
 
       babelHelpers.classCallCheck(this, AggregatorFn);
-      _this4 = babelHelpers.possibleConstructorReturn(this, (AggregatorFn.__proto__ || Object.getPrototypeOf(AggregatorFn)).apply(this, arguments));
+      _this4 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(AggregatorFn).apply(this, arguments));
       _this4._aggregator = null;
       return _this4;
     }
@@ -298,7 +298,7 @@
             break;
         }
 
-        babelHelpers.get(AggregatorFn.prototype.__proto__ || Object.getPrototypeOf(AggregatorFn.prototype), "attributeChangedCallback", this).call(this, name, oldVal, newVal);
+        babelHelpers.get(babelHelpers.getPrototypeOf(AggregatorFn.prototype), "attributeChangedCallback", this).call(this, name, oldVal, newVal);
         this.aggregate();
       }
     }, {
@@ -331,12 +331,15 @@
       value: function _eval() {
         var _this6 = this;
 
-        var sInf = getScript(this._script);
+        var ig = 'fn = ';
+        var sInf = getScript(this._script, ig);
         if (sInf === null) return;
         sInf.args.forEach(function (arg) {
           if (arg !== '__this') destruct(_this6, arg);
         });
-        var inner = this._script.innerHTML;
+
+        var inner = this._script.innerHTML.trim().replace(ig, '');
+
         var count = AggregatorFn._count++;
         var fn = "\nvar af = customElements.get('".concat(AggregatorFn.is, "');\naf['fn_' + ").concat(count, "] = ").concat(inner, "\n        ");
         var script = document.createElement('script');
@@ -398,7 +401,7 @@
     }, {
       key: "observedAttributes",
       get: function get() {
-        return babelHelpers.get(AggregatorFn.__proto__ || Object.getPrototypeOf(AggregatorFn), "observedAttributes", this).concat([input]);
+        return babelHelpers.get(babelHelpers.getPrototypeOf(AggregatorFn), "observedAttributes", this).concat([input]);
       }
     }]);
     return AggregatorFn;

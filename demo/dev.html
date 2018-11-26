@@ -16,14 +16,12 @@
                 </script>
             </xtal-deco>
             <button>Click Test</button>
-            <aggregator-fn>
-                <script nomodule>
-                    ({a, b, c, __this}) => {
-                        console.log(__this);
-                        return a + b + c;
-                    }
-                </script>
-            </aggregator-fn>
+            <aggregator-fn><script nomodule>
+                fn = ({a, b, c, __this}) => {
+                    console.log(__this);
+                    return a + b + c;
+                }
+            </script></aggregator-fn>
             <p-d on="value-changed" skip-init to="{innerText}"></p-d>
             <div></div>
             

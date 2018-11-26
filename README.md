@@ -27,6 +27,15 @@ does the following:
 1)  Dynamically attaches properties to the aggregator-fn element for each of the function arguments -- "operation" and "expression" in this case.
 2)  Any time any of the property values changes, the aggregator function is evaluated (allowing for some debouncing), and the result is stored in the element's value property.  An event, "value-changed" is fired every time the value changes.
 
+## VS Code workaround
+
+To accomodate VS Code and gain some intellisense support, you can precede the expression with the reserved characters "fn = ":
+
+```html
+<aggregator-fn><script nomodule>
+    fn = ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+</script></aggregator-fn>
+```
 
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 

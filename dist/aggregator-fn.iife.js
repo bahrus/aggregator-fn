@@ -17,10 +17,10 @@ const debounce = (fn, time) => {
         timeout = setTimeout(functionCall, time);
     };
 };
-function getScript(srcScript) {
+function getScript(srcScript, ignore) {
     const inner = srcScript.innerHTML.trim();
-    const trEq = 'tr = ';
-    if (inner.startsWith('(') || inner.startsWith(trEq)) {
+    //const trEq = 'tr = ';
+    if (inner.startsWith('(') || inner.startsWith(ignore)) {
         const ied = self['xtal_latx_ied']; //IE11
         if (ied !== undefined) {
             return ied(inner);
@@ -28,7 +28,7 @@ function getScript(srcScript) {
         else {
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
-            let lhs = inner.substr(0, iFatArrowPos).replace(trEq, '').trim();
+            let lhs = inner.substr(0, iFatArrowPos).replace(ignore, '').trim();
             c2del.forEach(t => lhs = lhs.replace(t, ''));
             const rhs = inner.substr(iFatArrowPos + 2);
             return {
@@ -272,14 +272,15 @@ class AggregatorFn extends XtallatX(HTMLElement) {
         this.eval();
     }
     eval() {
-        const sInf = getScript(this._script);
+        const ig = 'fn = ';
+        const sInf = getScript(this._script, ig);
         if (sInf === null)
             return;
         sInf.args.forEach(arg => {
             if (arg !== '__this')
                 destruct(this, arg);
         });
-        const inner = this._script.innerHTML;
+        const inner = this._script.innerHTML.trim().replace(ig, '');
         const count = AggregatorFn._count++;
         const fn = `
 var af = customElements.get('${AggregatorFn.is}');

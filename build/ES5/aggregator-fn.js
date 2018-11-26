@@ -11,7 +11,7 @@ function (_XtallatX) {
     var _this;
 
     babelHelpers.classCallCheck(this, AggregatorFn);
-    _this = babelHelpers.possibleConstructorReturn(this, (AggregatorFn.__proto__ || Object.getPrototypeOf(AggregatorFn)).apply(this, arguments));
+    _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(AggregatorFn).apply(this, arguments));
     _this._aggregator = null;
     return _this;
   }
@@ -32,7 +32,7 @@ function (_XtallatX) {
           break;
       }
 
-      babelHelpers.get(AggregatorFn.prototype.__proto__ || Object.getPrototypeOf(AggregatorFn.prototype), "attributeChangedCallback", this).call(this, name, oldVal, newVal);
+      babelHelpers.get(babelHelpers.getPrototypeOf(AggregatorFn.prototype), "attributeChangedCallback", this).call(this, name, oldVal, newVal);
       this.aggregate();
     }
   }, {
@@ -65,12 +65,15 @@ function (_XtallatX) {
     value: function _eval() {
       var _this3 = this;
 
-      var sInf = getScript(this._script);
+      var ig = 'fn = ';
+      var sInf = getScript(this._script, ig);
       if (sInf === null) return;
       sInf.args.forEach(function (arg) {
         if (arg !== '__this') destruct(_this3, arg);
       });
-      var inner = this._script.innerHTML;
+
+      var inner = this._script.innerHTML.trim().replace(ig, '');
+
       var count = AggregatorFn._count++;
       var fn = "\nvar af = customElements.get('".concat(AggregatorFn.is, "');\naf['fn_' + ").concat(count, "] = ").concat(inner, "\n        ");
       var script = document.createElement('script');
@@ -132,7 +135,7 @@ function (_XtallatX) {
   }, {
     key: "observedAttributes",
     get: function get() {
-      return babelHelpers.get(AggregatorFn.__proto__ || Object.getPrototypeOf(AggregatorFn), "observedAttributes", this).concat([input]);
+      return babelHelpers.get(babelHelpers.getPrototypeOf(AggregatorFn), "observedAttributes", this).concat([input]);
     }
   }]);
   return AggregatorFn;
