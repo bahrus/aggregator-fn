@@ -1,6 +1,6 @@
 {
   "name": "aggregator-fn",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "TBD",
   "main": "aggregator-fn.js",
   "scripts": {
