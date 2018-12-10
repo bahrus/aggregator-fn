@@ -47,8 +47,8 @@ function destruct(target, prop, megaProp = 'input') {
         debouncers = target._debouncers = {};
     let debouncer = debouncers[megaProp];
     if (!debouncer) {
-        debouncer = debouncers[megaProp] = debounce(() => {
-            target[megaProp] = Object.assign({}, target[megaProp]);
+        debouncer = debouncers[megaProp] = debounce((t) => {
+            t[megaProp] = Object.assign({}, t[megaProp]);
         }, 10); //use task sceduler?
     }
     Object.defineProperty(target, prop, {
@@ -59,7 +59,7 @@ function destruct(target, prop, megaProp = 'input') {
             this['_' + prop] = val;
             if (this[megaProp]) {
                 this[megaProp][prop] = val;
-                debouncer();
+                debouncer(this);
                 //this[megaProp] = Object.assign({}, this[megaProp]);
             }
             else {
@@ -140,7 +140,7 @@ function XtallatX(superClass) {
          * @param detail Information to be passed with the event
          * @param asIs If true, don't append event name with '-changed'
          */
-        de(name, detail, asIs) {
+        de(name, detail, asIs = false) {
             const eventName = name + (asIs ? '' : '-changed');
             const newEvent = new CustomEvent(eventName, {
                 detail: detail,
