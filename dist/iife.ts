@@ -1,31 +1,33 @@
 
-    //@ts-check
     (function () {
-    function define(custEl) {
+    function define(custEl: any){
     let tagName = custEl.is;
-    if (customElements.get(tagName)) {
+    if(customElements.get(tagName)){
         console.warn('Already registered ' + tagName);
         return;
     }
     customElements.define(tagName, custEl);
 }
-const debounce = (fn, time) => {
-    let timeout;
-    return function () {
-        const functionCall = () => fn.apply(this, arguments);
+const debounce = (fn: (args: any) => void, time: number) => {
+    let timeout: any;
+    return function (this: Function) {
+        const functionCall = () => fn.apply(this, <any>arguments);
         clearTimeout(timeout);
         timeout = setTimeout(functionCall, time);
-    };
-};
-function getScript(srcScript, ignore) {
+    }
+}
+interface IScriptInfo{
+    args: string[],
+    body: string,
+}
+function  getScript(srcScript: HTMLScriptElement, ignore: string) : IScriptInfo | null{
     const inner = srcScript.innerHTML.trim();
     //const trEq = 'tr = ';
-    if (inner.startsWith('(') || inner.startsWith(ignore)) {
-        const ied = self['xtal_latx_ied']; //IE11
-        if (ied !== undefined) {
+    if(inner.startsWith('(') || inner.startsWith(ignore)){
+        const ied = (<any>self)['xtal_latx_ied']; //IE11
+        if(ied !== undefined){ 
             return ied(inner);
-        }
-        else {
+        }else{
             const iFatArrowPos = inner.indexOf('=>');
             const c2del = ['(', ')', '{', '}'];
             let lhs = inner.substr(0, iFatArrowPos).replace(ignore, '').trim();
@@ -34,22 +36,23 @@ function getScript(srcScript, ignore) {
             return {
                 args: lhs.split(',').map(s => s.trim()),
                 body: rhs,
-            };
+            }
         }
-    }
-    else {
+        
+    }else{
         return null;
     }
+    
 }
-function destruct(target, prop, megaProp = 'input') {
-    let debouncers = target._debouncers;
-    if (!debouncers)
-        debouncers = target._debouncers = {};
+
+function destruct(target: any, prop: string, megaProp: string = 'input'){
+    let debouncers = (<any>target)._debouncers;
+    if(!debouncers) debouncers =  (<any>target)._debouncers = {};
     let debouncer = debouncers[megaProp];
-    if (!debouncer) {
+    if(!debouncer){
         debouncer = debouncers[megaProp] = debounce((t) => {
-            t[megaProp] = Object.assign({}, t[megaProp]);
-        }, 10); //use task sceduler?
+            (<any>t)[megaProp] = Object.assign({}, (<any>t)[megaProp]);
+        }, 10);  //use task sceduler?
     }
     Object.defineProperty(target, prop, {
         get: function () {
@@ -57,13 +60,12 @@ function destruct(target, prop, megaProp = 'input') {
         },
         set: function (val) {
             this['_' + prop] = val;
-            if (this[megaProp]) {
+            if(this[megaProp]) {
                 this[megaProp][prop] = val;
                 debouncer(this);
                 //this[megaProp] = Object.assign({}, this[megaProp]);
-            }
-            else {
-                this[megaProp] = { [prop]: val };
+            }else{
+                this[megaProp] = {[prop]: val}; 
             }
         },
         enumerable: true,
@@ -71,19 +73,49 @@ function destruct(target, prop, megaProp = 'input') {
     });
 }
 const disabled = 'disabled';
+
+interface IXtallatXI extends HTMLElement {
+    /**
+     * Any component that emits events should not do so if it is disabled.
+     * Note that this is not enforced, but the disabled property is made available.
+     * Users of this mix-in should ensure not to call "de" if this property is set to true.
+    */
+    disabled: boolean;
+    /**
+     * Set attribute value.
+     * @param name 
+     * @param val 
+     * @param trueVal String to set attribute if true.
+     */
+    attr(name: string, val: string | boolean, trueVal?: string): void;
+    /**
+     * Dispatch Custom Event
+     * @param name Name of event to dispatch ("-changed" will be appended if asIs is false)
+     * @param detail Information to be passed with the event
+     * @param asIs If true, don't append event name with '-changed'
+     */
+    de(name: string, detail: any, asIs?: boolean): CustomEvent;
+    /**
+     * Needed for asynchronous loading
+     * @param props Array of property names to "upgrade", without losing value set while element was Unknown
+     */
+    _upgradeProperties(props: string[]): void;
+    attributeChangedCallback(name: string, oldVal: string, newVal: string): void;
+    connectedCallback?(): void;
+    // static observedAttributes: string[]; 
+}
+type Constructor<T = {}> = new (...args: any[]) => T;
 /**
  * Base class for many xtal- components
  * @param superClass
  */
-function XtallatX(superClass) {
-    return class extends superClass {
-        constructor() {
-            super(...arguments);
-            this._evCount = {};
-        }
+function XtallatX<TBase extends Constructor<HTMLElement>>(superClass: TBase) {
+    return class extends superClass implements IXtallatXI {
         static get observedAttributes() {
             return [disabled];
         }
+
+        _disabled!: boolean;
         /**
          * Any component that emits events should not do so if it is disabled.
          * Note that this is not enforced, but the disabled property is made available.
@@ -97,19 +129,20 @@ function XtallatX(superClass) {
         }
         /**
          * Set attribute value.
-         * @param name
-         * @param val
+         * @param name 
+         * @param val 
          * @param trueVal String to set attribute if true.
          */
-        attr(name, val, trueVal) {
-            const v = val ? 'set' : 'remove'; //verb
-            this[v + 'Attribute'](name, trueVal || val);
+        attr(name: string, val: string | boolean | null, trueVal?: string) {
+            const v = val ? 'set' : 'remove';  //verb
+            (<any>this)[v + 'Attribute'](name, trueVal || val);
         }
+        _evCount: { [key: string]: number } = {};
         /**
          * Turn number into string with even and odd values easy to query via css.
-         * @param n
+         * @param n 
          */
-        to$(n) {
+        to$(n: number) {
             const mod = n % 2;
             return (n - mod) / 2 + '-' + mod;
         }
@@ -117,80 +150,84 @@ function XtallatX(superClass) {
          * Increment event count
          * @param name
          */
-        incAttr(name) {
+        incAttr(name: string) {
             const ec = this._evCount;
             if (name in ec) {
                 ec[name]++;
-            }
-            else {
+            } else {
                 ec[name] = 0;
             }
             this.attr('data-' + name, this.to$(ec[name]));
         }
-        attributeChangedCallback(name, oldVal, newVal) {
+        attributeChangedCallback(name: string, oldVal: string, newVal: string) {
             switch (name) {
                 case disabled:
                     this._disabled = newVal !== null;
                     break;
             }
         }
+
         /**
          * Dispatch Custom Event
          * @param name Name of event to dispatch ("-changed" will be appended if asIs is false)
          * @param detail Information to be passed with the event
          * @param asIs If true, don't append event name with '-changed'
          */
-        de(name, detail, asIs = false) {
+        de(name: string, detail: any, asIs: boolean = false) {
             const eventName = name + (asIs ? '' : '-changed');
             const newEvent = new CustomEvent(eventName, {
                 detail: detail,
                 bubbles: true,
                 composed: false,
-            });
+            } as CustomEventInit);
             this.dispatchEvent(newEvent);
             this.incAttr(eventName);
             return newEvent;
         }
+
         /**
          * Needed for asynchronous loading
          * @param props Array of property names to "upgrade", without losing value set while element was Unknown
          */
-        _upgradeProperties(props) {
+        _upgradeProperties(props: string[]) {
             props.forEach(prop => {
                 if (this.hasOwnProperty(prop)) {
-                    let value = this[prop];
-                    delete this[prop];
-                    this[prop] = value;
+                    let value = (<any>this)[prop];
+                    delete (<any>this)[prop];
+                    (<any>this)[prop] = value;
                 }
-            });
+            })
+
         }
-    };
+    }
 }
-function attachScriptFn(tagName, target, prop, body, imports) {
+function attachScriptFn(tagName: string, target: any, prop: string, body: string, imports:string){
     const constructor = customElements.get(tagName);
     const count = constructor._count++;
     const script = document.createElement('script');
-    if (supportsStaticImport()) {
+    
+    if(supportsStaticImport()) {
         script.type = 'module';
     }
     script.innerHTML = `
 ${imports}
 (function () {
 ${body}
-const constructor = customElements.get('${tagName}');
 constructor['fn_' + ${count}] = __fn;
 })();
 `;
-    document.head.appendChild(script);
+    document.head!.appendChild(script);
     attachFn(constructor, count, target, prop);
 }
+
 function supportsStaticImport() {
     const script = document.createElement('script');
-    return 'noModule' in script;
-}
-function attachFn(constructor, count, target, prop) {
+    return 'noModule' in script; 
+  }
+
+function attachFn(constructor: any, count: number, target: any, prop: string){
     const Fn = constructor['fn_' + count];
-    if (Fn === undefined) {
+    if(Fn === undefined){
         setTimeout(() => {
             attachFn(constructor, count, target, prop);
         }, 10);
@@ -198,57 +235,57 @@ function attachFn(constructor, count, target, prop) {
     }
     target[prop] = Fn;
 }
-function getDynScript(el, callBack) {
-    el._script = el.querySelector('script');
-    if (!el._script) {
+function getDynScript(el: HTMLElement, callBack: any){
+    (<any>el)._script = el.querySelector('script') as HTMLScriptElement;
+    if(!(<any>el)._script){
         setTimeout(() => {
-            getDynScript(el, callBack);
+            getDynScript(el, callBack)
         }, 10);
         return;
     }
     callBack();
-}
+} 
+
 const input = 'input';
-class AggregatorFn extends XtallatX(HTMLElement) {
-    constructor() {
-        super(...arguments);
-        this._aggregator = null;
-    }
-    static get is() { return 'aggregator-fn'; }
+class AggregatorFn extends XtallatX(HTMLElement){
+    static get is() { return 'aggregator-fn';}
     static get observedAttributes() {
         return super.observedAttributes.concat([input]);
     }
-    get input() {
+    static _count = 0;
+    _input: any | null;
+    get input(){
         return this._input;
     }
-    set input(val) {
+    set input(val){
         this._input = val;
         this.aggregate();
     }
-    get value() {
+    _value: any | null;
+    get value(){
         return this._value;
     }
-    set value(val) {
+    set value(val){
         this._value = val;
         this.de('value', {
             value: val
-        });
+        })
     }
-    get aggregator() {
+    _aggregator: ((input: any) => any) | null = null;
+    get aggregator(){
         return this._aggregator;
     }
-    set aggregator(val) {
+    set aggregator(val){
         this._aggregator = val;
         this.aggregate();
     }
-    aggregate() {
-        if (this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled)
-            return;
-        this._input.__this = this;
-        this.value = this._aggregator(this._input);
+    aggregate(){
+        if(this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled) return;
+        this._input.__this = this; 
+        this.value = this._aggregator(this._input); 
     }
-    attributeChangedCallback(name, oldVal, newVal) {
-        switch (name) {
+    attributeChangedCallback(name: string, oldVal: string, newVal: string) {
+        switch(name){
             case input:
                 this.input = JSON.parse(newVal);
                 break;
@@ -261,9 +298,10 @@ class AggregatorFn extends XtallatX(HTMLElement) {
         this._upgradeProperties(['disabled', input]);
         this.getS();
     }
-    getS() {
-        this._script = this.querySelector('script');
-        if (!this._script) {
+    _script!: HTMLScriptElement;
+    getS(){
+        this._script = this.querySelector('script') as HTMLScriptElement;
+        if(!this._script){
             setTimeout(() => {
                 this.getS();
             }, 10);
@@ -271,30 +309,30 @@ class AggregatorFn extends XtallatX(HTMLElement) {
         }
         this.eval();
     }
-    eval() {
+    eval(){
         const ig = 'fn = ';
         const sInf = getScript(this._script, ig);
-        if (sInf === null)
-            return;
-        sInf.args.forEach(arg => {
-            if (arg !== '__this')
-                destruct(this, arg);
+        
+        if(sInf === null) return;
+        sInf.args.forEach(arg =>{
+            if(arg !== '__this') destruct(this, arg);
         });
         const inner = this._script.innerHTML.trim().replace(ig, '');
         const count = AggregatorFn._count++;
         const fn = `
 var af = customElements.get('${AggregatorFn.is}');
 af['fn_' + ${count}] = ${inner}
-        `;
+        `
+        
         const script = document.createElement('script');
         script.type = 'module';
         script.innerHTML = fn;
-        document.head.appendChild(script);
+        document.head!.appendChild(script);
         this.attachAggregator(count);
     }
-    attachAggregator(count) {
-        const aggregator = AggregatorFn['fn_' + count];
-        if (aggregator === undefined) {
+    attachAggregator(count: number){
+        const aggregator = (<any>AggregatorFn)['fn_' + count];
+        if(aggregator === undefined){
             setTimeout(() => {
                 this.attachAggregator(count);
             }, 10);
@@ -303,7 +341,6 @@ af['fn_' + ${count}] = ${inner}
         this.aggregator = aggregator;
     }
 }
-AggregatorFn._count = 0;
 define(AggregatorFn);
     })();  
         
