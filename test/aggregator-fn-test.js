@@ -15,4 +15,3 @@ async function customTests(page) {
         path: 'demo/dev.html'
     }, customTests);
 })();
-//# sourceMappingURL=aggregator-fn-test.js.map

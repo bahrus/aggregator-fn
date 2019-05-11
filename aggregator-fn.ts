@@ -1,9 +1,10 @@
 import {XtallatX} from 'xtal-element/xtal-latx.js';
-import {define} from 'xtal-element/define.js';
+import {define} from 'trans-render/define.js';
+import {hydrate} from 'trans-render/hydrate.js'
 import {destruct, getScript} from 'xtal-element/destruct.js';
 
 const input = 'input';
-export class AggregatorFn extends XtallatX(HTMLElement){
+export class AggregatorFn extends XtallatX(hydrate(HTMLElement)){
     static get is() { return 'aggregator-fn';}
     static get observedAttributes() {
         return super.observedAttributes.concat([input]);
@@ -51,7 +52,7 @@ export class AggregatorFn extends XtallatX(HTMLElement){
     }
     connectedCallback() {
         this.style.display = 'none';
-        this._upgradeProperties(['disabled', input]);
+        this.propUp(['disabled', input]);
         this.getS();
     }
     _script!: HTMLScriptElement;

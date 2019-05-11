@@ -12,14 +12,15 @@
     "url": "git+https://github.com/bahrus/aggregator-fn.git"
   },
   "dependencies": {
-    "xtal-element": "0.0.29"
+    "xtal-element": "0.0.59",
+    "trans-render": "0.0.111"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.7",
+    "@webcomponents/webcomponentsjs": "2.2.10",
     "jiife": "0.0.12",
     "tape": "4.10.1",
     "@types/tape": "4.2.33",
-    "xtal-test": "0.0.10"
+    "xtal-test": "0.0.18"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",

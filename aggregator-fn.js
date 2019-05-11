@@ -1,8 +1,9 @@
-import { XtallatX } from 'xtal-latx/xtal-latx.js';
-import { define } from 'xtal-latx/define.js';
-import { destruct, getScript } from 'xtal-latx/destruct.js';
+import { XtallatX } from 'xtal-element/xtal-latx.js';
+import { define } from 'trans-render/define.js';
+import { hydrate } from 'trans-render/hydrate.js';
+import { destruct, getScript } from 'xtal-element/destruct.js';
 const input = 'input';
-export class AggregatorFn extends XtallatX(HTMLElement) {
+export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
         this._aggregator = null;
@@ -51,7 +52,7 @@ export class AggregatorFn extends XtallatX(HTMLElement) {
     }
     connectedCallback() {
         this.style.display = 'none';
-        this._upgradeProperties(['disabled', input]);
+        this.propUp(['disabled', input]);
         this.getS();
     }
     getS() {
@@ -98,4 +99,3 @@ af['fn_' + ${count}] = ${inner}
 }
 AggregatorFn._count = 0;
 define(AggregatorFn);
-//# sourceMappingURL=aggregator-fn.js.map
