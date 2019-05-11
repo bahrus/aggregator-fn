@@ -1,6 +1,7 @@
 <html>
     <body>
         <div>
+            <xtal-sip><script nomodule>["xtal-deco", "aggregator-fn", "p-d"]</script></xtal-sip>
             <xtal-deco>
                 <script nomodule>
                     ({
@@ -36,12 +37,24 @@
                     }
                 </script>
             </aggregator-fn>
-            <!-- For Retro Browsers -->
-            <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-            <!-- End Polyfills -->
-            <script type="module" src="../aggregator-fn.js"></script>
-            <script src="https://unpkg.com/p-d.p-u@0.0.67/p-d.p-d-x.p-u.js"></script>
-            <script type="module" src="https://unpkg.com/xtal-decorator@0.0.20/xtal-decorator.iife.js"></script>
+
+            <!-- Use experimental import maps -->
+            <script defer src="https://unpkg.com/es-module-shims@0.2.4/dist/es-module-shims.js"></script>
+            <script type="importmap-shim">
+                    {
+                        "imports": {
+                            "xtal-sip": "https://unpkg.com/xtal-sip@0.0.80/xtal-sip.js",
+                            "p-d": "https://unpkg.com/p-d.p-u@0.0.122/p-d.js?module",
+                            "xtal-deco": "https://unpkg.com/xtal-decorator@0.0.43/xtal-deco.js?module",
+                            "xtal-element/": "../node_modules/xtal-element/",
+                            "trans-render/": "../node_modules/trans-render/",
+                            "aggregator-fn": "../aggregator-fn.js"
+                        }
+                    }
+                    </script>
+            <script  type="module-shim">
+                import 'xtal-sip';
+            </script>
         </div>
     </body>
 </html>
