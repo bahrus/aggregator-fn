@@ -12,11 +12,11 @@ export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
     static get observedAttributes() {
         return super.observedAttributes.concat([input]);
     }
-    get input() {
-        return this._input;
+    get _input() {
+        return this.__input;
     }
-    set input(val) {
-        this._input = val;
+    set _input(val) {
+        this.__input = val;
         this.aggregate();
     }
     get value() {
@@ -36,15 +36,15 @@ export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
         this.aggregate();
     }
     aggregate() {
-        if (this._input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled)
+        if (this.__input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled)
             return;
-        this._input.__this = this;
-        this.value = this._aggregator(this._input);
+        this.__input.__this = this;
+        this.value = this._aggregator(this.__input);
     }
     attributeChangedCallback(name, oldVal, newVal) {
         switch (name) {
             case input:
-                this.input = JSON.parse(newVal);
+                this._input = JSON.parse(newVal);
                 break;
         }
         super.attributeChangedCallback(name, oldVal, newVal);
