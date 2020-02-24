@@ -5,7 +5,6 @@
   "main": "aggregator-fn.js",
   "module": "aggregator-fn.js",
   "scripts": {
-    "test": "node createIIFE.js && tape test/*.js",
     "serve": "node node_modules/xtal-test/serve.js"
   },
   "repository": {
@@ -13,15 +12,16 @@
     "url": "git+https://github.com/bahrus/aggregator-fn.git"
   },
   "dependencies": {
-    "xtal-element": "0.0.82",
-    "trans-render": "0.0.131"
+    "xtal-element": "0.0.101",
+    "trans-render": "0.0.142"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.10",
-    "jiife": "0.0.12",
-    "tape": "4.11.0",
-    "@types/tape": "4.2.33",
-    "xtal-test": "0.0.19"
+    "@webcomponents/webcomponentsjs": "2.4.1",
+    "es-module-shims": "0.4.6",
+    "xtal-test": "0.0.41",
+    "p-et-alia": "0.0.71",
+    "xtal-fetch": "0.0.76",
+    "@alenaksu/json-viewer": "0.1.0"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",

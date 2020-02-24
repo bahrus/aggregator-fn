@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for=operation>Operation:</label>
+        <input name=operation value=derive>
+        <p-d on=input to=[-operation] m=1></p-d>
+        <label for=expression>Expression:</label>
+        <input name=expression value="x^2">
+        <p-d on="input" to=[-expression] m=1 val=target.value></p-d>
+        <aggregator-fn -operation -expression><script nomodule>
+            ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+        </script></aggregator-fn>
+        <p-d on=value-changed to=[-href] m=1></p-d>
+        <xtal-fetch fetch -href></xtal-fetch>
+        <p-d on=fetch-complete to=[-data] m=1></p-d>
+        <json-viewer -data></json-viewer>
+        
+    </div>
+        <!-- Use experimental import maps -->
+        <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
+        <script type="importmap-shim">
+        {
+            "imports": {
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "@tiny-lit/": "../node_modules/@tiny-lit/"
+            }
+        }
+        </script>
+        <script  type="module-shim">
+            import '../aggregator-fn.js';
+            import '../node_modules/p-et-alia/p-d.js';
+            import '../node_modules/xtal-fetch/xtal-fetch-entities.js';
+            import '../node_modules/@alenaksu/json-viewer/build/index.js'
+        </script>
+</body>
+</html>

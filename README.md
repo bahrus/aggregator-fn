@@ -41,19 +41,19 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 
 ```html
     <div>
-        <label for="operation">Operation:</label>
-        <input type="text" name="operation" value="derive">
-        <p-d on="input" to="aggregator-fn" prop="operation" m="1"></p-d>
-        <label for="expression">Expression:</label>
-        <input type="text" name="expression" value="x^2">
-        <p-d on="input" prop="expression"></p-d>
-        <aggregator-fn><script nomodule>
+        <label for=operation>Operation:</label>
+        <input name=operation value=derive>
+        <p-d on=input to=[-operation] m=1></p-d>
+        <label for=expression>Expression:</label>
+        <input name=expression value="x^2">
+        <p-d on="input" to=[-expression] m=1></p-d>
+        <aggregator-fn -operation -expression><script nomodule>
             ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
-        <p-d on="value-changed" prop="href"></p-d>
-        <xtal-fetch fetch></xtal-fetch>
-        <p-d on="fetch-complete" prop="input"></p-d>
-        <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
+        <p-d on=value-changed to=[-href] m=1></p-d>
+        <xtal-fetch fetch -href></xtal-fetch>
+        <p-d on=fetch-complete to=[-data] m=1></p-d>
+        <json-viewer -data></json-viewer>
         
     </div>
 ```
