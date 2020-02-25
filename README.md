@@ -2,7 +2,9 @@
 
 <a href="https://nodei.co/npm/aggregator-fn/"><img src="https://nodei.co/npm/aggregator-fn.png"></a>
 
-<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/aggregator-fn@0.0.13/dist/aggregator-fn.iife.min.js?compression=gzip">
+[![Actions Status](https://github.com/bahrus/aggregator-fn/workflows/CI/badge.svg)](https://github.com/bahrus/aggregator-fn/actions?query=workflow%3ACI)
+
+<img src="https://badgen.net/bundlephobia/minzip/aggregator-fn">
 
 # aggregator-fn
 

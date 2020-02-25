@@ -5,7 +5,8 @@
   "main": "aggregator-fn.js",
   "module": "aggregator-fn.js",
   "scripts": {
-    "serve": "node node_modules/xtal-test/serve.js"
+    "serve": "node node_modules/xtal-test/serve.js",
+    "test": "node test/test-all.js"
   },
   "repository": {
     "type": "git",
