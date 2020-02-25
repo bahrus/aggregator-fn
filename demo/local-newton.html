@@ -9,6 +9,7 @@
     <div>
         <label for=operation>Operation:</label>
         <input name=operation value=derive>
+        <!-- pass down (p-d) input changes to operation property-->
         <p-d on=input to=[-operation] m=1></p-d>
         <label for=expression>Expression:</label>
         <input name=expression value="x^2">
