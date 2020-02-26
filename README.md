@@ -50,6 +50,8 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
     </div>
 ```
 
+## [Demo](https://jsfiddle.net/bahrus/Ln1cqdgb/)
+
 <!--
 ```
 <custom-element-demo>
