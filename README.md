@@ -29,22 +29,12 @@ does the following:
 1)  Dynamically attaches properties to the aggregator-fn element for each of the function arguments -- "operation" and "expression" in this case.
 2)  Any time any of the property values change, the aggregator function is evaluated (allowing for some debouncing), and the result is stored in the element's value property.  An event, "value-changed" is fired every time the value changes.
 
-## VS Code workaround
-
-To accommodate VS Code and gain some intellisense support, you can precede the expression with the reserved characters "fn = ":
-
-```html
-<aggregator-fn><script nomodule>
-    fn = ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-</script></aggregator-fn>
-```
-
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 
 ```html
     <div>
         <label for=operation>Operation:</label>
-        <input name=operation value=derive>
+        <input name=operation value=integrate>
         <p-d on=input to=[-operation] m=1></p-d>
         <label for=expression>Expression:</label>
         <input name=expression value="x^2">
@@ -65,37 +55,23 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 <custom-element-demo>
   <template>
     <div style="height:600px">
-        <!-- ================    HTML Markup =====================-->
-        <!-- Specify Mathematical Operation -->
-        <label for="operation">Operation:</label>
-        <input disabled type="text" name="operation" value="derive">
-        <!-- Pass down Operation to aggregator-fn when operation changes-->
-        <p-d on="input" to="aggregator-fn" prop="operation"></p-d>
-        <!-- Specify Mathematical Expression-->
-        <label for="expression">Expression:</label>
-        <input disabled type="text" name="expression" value="x^2">
-        <!-- Pass down Expression to aggregator-fn when expression changes -->
-        <p-d on="input" prop="expression"></p-d>
-        <!-- Combine Operation and Expression into URL Newton Microservice Api understands-->
-        <aggregator-fn disabled><script nomodule>
-            ({ operation, expression }) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+        <label for=operation>Operation:</label>
+        <input name=operation value=integrate>
+        <p-d on=input to=[-operation] m=1 val=target.value></p-d>
+        <label for=expression>Expression:</label>
+        <input name=expression value="x^2">
+        <p-d on=input to=[-expression] m=1 val=target.value></p-d>
+        <aggregator-fn -operation -expression><script nomodule>
+            ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
-        <!-- Pass down url calculated by aggregator-fn to xtal-fetch's href property-->
-        <p-d on="value-changed" prop="href"></p-d>
-        <!-- Make fetch call to Newton Microservice Api -->
-        <xtal-fetch debounce-duration="100" fetch disabled></xtal-fetch>
-        <!-- Pass results of fetch to Json Viewer -->
-        <p-d on="fetch-complete" prop="input"></p-d>
-        <xtal-json-editor options="{}" height="300px"></xtal-json-editor>
-        
-        <!-- ========================  Script Refs ========================== -->
-        <!-- Polyfills Needed for MS browsers -->
-        <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-        <!-- End Polyfills -->
-        <script type="module" src="https://cdn.jsdelivr.net/npm/aggregator-fn@0.0.11/aggregator-fn.iife.js"></script>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-fetch@0.0.52/xtal-fetch.js"></script>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.82/dist/p-d.iife.js"></script>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/xtal-json-editor@0.0.29/xtal-json-editor.js"></script>
+        <p-d on=value-changed to=[-href] m=1></p-d>
+        <xtal-fetch-get fetch -href></xtal-fetch-get>
+        <p-d on=result-changed to=[-data] m=1></p-d>
+        <json-viewer -data></json-viewer>
+        <script type=module src=https://unpkg.com/@alenaksu/json-viewer@0.1.0/build/index.js?module></script>
+        <script type=module src=https://unpkg.com/aggregator-fn@0.0.18/aggregator-fn.js?module></script>
+        <script type=module src=https://unpkg.com/p-et-alia@0.0.71/p-d.js?module></script>
+        <script type=module src=https://unpkg.com/xtal-fetch@0.0.76/xtal-fetch-get.js?module></script>
     </div>
     </template>
 </custom-element-demo>
