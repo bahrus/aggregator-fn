@@ -56,13 +56,13 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 ```
 <custom-element-demo>
   <template>
-    <div style="height:600px">
+    <div>
         <label for=operation>Operation:</label>
-        <input name=operation value=integrate>
-        <p-d on=input to=[-operation] m=1 val=target.value></p-d>
+        <input id=operation value=integrate>
+        <p-d on=input to=[-operation] m=1></p-d>
         <label for=expression>Expression:</label>
-        <input name=expression value="x^2">
-        <p-d on=input to=[-expression] m=1 val=target.value></p-d>
+        <input id=expression value="x^2">
+        <p-d on=input to=[-expression] m=1></p-d>
         <aggregator-fn -operation -expression><script nomodule>
             ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
@@ -72,7 +72,7 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
         <json-viewer -data></json-viewer>
         <script type=module src=https://unpkg.com/@alenaksu/json-viewer@0.1.0/build/index.js?module></script>
         <script type=module src=https://unpkg.com/aggregator-fn@0.0.18/aggregator-fn.js?module></script>
-        <script type=module src=https://unpkg.com/p-et-alia@0.0.71/p-d.js?module></script>
+        <script type=module src=https://unpkg.com/p-et-alia@0.0.72/p-d.js?module></script>
         <script type=module src=https://unpkg.com/xtal-fetch@0.0.76/xtal-fetch-get.js?module></script>
     </div>
     </template>

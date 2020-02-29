@@ -8,12 +8,12 @@
 <body>
     <div>
         <label for=operation>Operation:</label>
-        <input name=operation value=integrate>
+        <input id=operation value=integrate>
         <!-- pass down (p-d) input changes to operation property-->
         <p-d on=input to=[-operation] m=1></p-d>
         <label for=expression>Expression:</label>
-        <input name=expression value="x^2">
-        <p-d on=input to=[-expression] m=1 val=target.value></p-d>
+        <input id=expression value="x^2">
+        <p-d on=input to=[-expression] m=1></p-d>
         <aggregator-fn -operation -expression><script nomodule>
             ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
