@@ -105,4 +105,6 @@ $ npm run serve
 
 ## Running Tests
 
-WIP
+```
+$ npm run test
+```
