@@ -1,23 +1,20 @@
-import { XtallatX } from 'xtal-element/xtal-latx.js';
-import { define } from 'trans-render/define.js';
+import { XtallatX, define } from 'xtal-element/xtal-latx.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { destruct, getScript } from 'xtal-element/destruct.js';
-const input = 'input';
+// const input = 'input';
 export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
-        this._aggregator = null;
+        this.aggregator = null;
     }
-    static get is() { return 'aggregator-fn'; }
-    static get observedAttributes() {
-        return super.observedAttributes.concat([input]);
-    }
-    get _input() {
-        return this.__input;
-    }
-    set _input(val) {
-        this.__input = val;
-        this.aggregate();
+    onPropsChange(name) {
+        switch (name) {
+            case '_input':
+            case 'aggregator':
+                this.aggregate();
+                break;
+        }
+        super.onPropsChange(name);
     }
     get value() {
         return this._value;
@@ -28,32 +25,11 @@ export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
             value: val
         });
     }
-    get aggregator() {
-        return this._aggregator;
-    }
-    set aggregator(val) {
-        this._aggregator = val;
-        this.aggregate();
-    }
     aggregate() {
-        if (this.__input === undefined || this._aggregator === undefined || this._aggregator === null || this._disabled)
+        if (this._input === undefined || this.aggregator === undefined || this.aggregator === null || this.disabled)
             return;
-        this.__input.__this = this;
-        this.value = this._aggregator(this.__input);
-    }
-    attributeChangedCallback(name, oldVal, newVal) {
-        switch (name) {
-            case input:
-                this._input = JSON.parse(newVal);
-                break;
-        }
-        super.attributeChangedCallback(name, oldVal, newVal);
-        this.aggregate();
-    }
-    connectedCallback() {
-        this.style.display = 'none';
-        this.propUp(['disabled', input]);
-        this.getS();
+        this._input.__this = this;
+        this.value = this.aggregator(this._input);
     }
     getS() {
         this._script = this.querySelector('script');
@@ -96,6 +72,16 @@ af['fn_' + ${count}] = ${inner}
         }
         this.aggregator = aggregator;
     }
+    connectedCallback() {
+        this.style.display = 'none';
+        this.getS();
+    }
 }
+AggregatorFn.is = 'aggregator-fn';
+AggregatorFn.attributeProps = ({ disabled, _input, aggregator }) => ({
+    boolean: [disabled],
+    string: [name],
+    object: [_input, aggregator]
+});
 AggregatorFn._count = 0;
 define(AggregatorFn);

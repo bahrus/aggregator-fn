@@ -13,15 +13,15 @@
     "url": "git+https://github.com/bahrus/aggregator-fn.git"
   },
   "dependencies": {
-    "xtal-element": "0.0.101",
-    "trans-render": "0.0.143"
+    "xtal-element": "0.0.140",
+    "trans-render": "0.0.177"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.4.3",
     "es-module-shims": "0.4.6",
     "xtal-test": "0.0.44",
-    "p-et-alia": "0.0.74",
-    "xtal-fetch": "0.0.79",
+    "p-et-alia": "0.0.76",
+    "xtal-fetch": "0.0.81",
     "@alenaksu/json-viewer": "0.1.0"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
