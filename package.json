@@ -1,6 +1,6 @@
 {
   "name": "aggregator-fn",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Evaluate expressions in inline script tag.",
   "main": "aggregator-fn.js",
   "module": "aggregator-fn.js",
