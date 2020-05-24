@@ -3,13 +3,12 @@ import {hydrate} from 'trans-render/hydrate.js'
 import {destruct, getScript} from 'xtal-element/destruct.js';
 import {AttributeProps} from 'xtal-element/types.d.js';
 
-// const input = 'input';
 export class AggregatorFn extends XtallatX(hydrate(HTMLElement)){
     static is = 'aggregator-fn';
     static attributeProps = ({disabled, _input, aggregator} : AggregatorFn) => ({
-        boolean: [disabled],
-        string: [name],
-        object: [_input, aggregator]
+        bool: [disabled],
+        str: [name],
+        obj: [_input, aggregator]
     }  as AttributeProps);
     static _count = 0;
     onPropsChange(name: string){

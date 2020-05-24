@@ -1,7 +1,6 @@
 import { XtallatX, define } from 'xtal-element/xtal-latx.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { destruct, getScript } from 'xtal-element/destruct.js';
-// const input = 'input';
 export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
@@ -79,9 +78,9 @@ af['fn_' + ${count}] = ${inner}
 }
 AggregatorFn.is = 'aggregator-fn';
 AggregatorFn.attributeProps = ({ disabled, _input, aggregator }) => ({
-    boolean: [disabled],
-    string: [name],
-    object: [_input, aggregator]
+    bool: [disabled],
+    str: [name],
+    obj: [_input, aggregator]
 });
 AggregatorFn._count = 0;
 define(AggregatorFn);
