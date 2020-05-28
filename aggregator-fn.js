@@ -73,6 +73,7 @@ af['fn_' + ${count}] = ${inner}
     }
     connectedCallback() {
         this.style.display = 'none';
+        super.connectedCallback();
         this.getS();
     }
 }
