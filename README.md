@@ -84,13 +84,13 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 
 ## Accessing the custom element itself
 
-In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, __this:
+In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, self:
 
 ```html
 <aggregator-fn>
     <script nomodule>
-        ({a, b, c, __this}) => {
-            console.log(__this);
+        ({a, b, c, self}) => {
+            console.log(self;
             return a + b + c;
         }
     </script>

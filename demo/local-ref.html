@@ -18,8 +18,8 @@
             </xtal-deco>
             <button>Click Test</button>
             <aggregator-fn><script nomodule>
-                fn = ({a, b, c, __this}) => {
-                    console.log(__this);
+                fn = ({a, b, c, self}) => {
+                    console.log(self);
                     return a + b + c;
                 }
             </script></aggregator-fn>
