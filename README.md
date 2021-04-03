@@ -8,13 +8,13 @@
 
 # aggregator-fn
 
-NB:  aggregator-fn shares quite a bit of code with [litter-g](https://www.webcomponents.org/element/litter-g), as they both tackle similar problems.  It would be natural to use the two together (without much additional overhead.)
-
 \<aggregator-fn\> is a non-visual custom element that aggregates properties together using an inline JS expression.
 
-This component is designed to provide an alternative to Polymer's template string interpolation.  It is most useful for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://github.com/bahrus/p-et-alia).
+It is most useful for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://github.com/bahrus/p-et-alia).
 
 The initial motivator for this component is being able to build url's from a form consisting of input elements -- declaratively.
+
+See [form-matter](https://github.com/bahrus/form-matter) for an alternative.
 
 ## Syntax:
 
@@ -34,18 +34,19 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 ```html
     <div>
         <label for=operation>Operation:</label>
-        <input name=operation value=integrate>
-        <p-d on=input to=[-operation] m=1></p-d>
+        <input id=operation value=integrate>
+        <!-- pass down (p-d) input changes to operation property-->
+        <p-d on=input to=[-operation] m=1 init-val=value></p-d>
         <label for=expression>Expression:</label>
-        <input name=expression value="x^2">
-        <p-d on="input" to=[-expression] m=1></p-d>
+        <input id=expression value="x^2">
+        <p-d on=input to=[-expression] m=1 init-val=value></p-d>
         <aggregator-fn -operation -expression><script nomodule>
-            ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+            ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
-        <p-d on=value-changed to=[-href] m=1></p-d>
-        <xtal-fetch fetch -href></xtal-fetch>
-        <p-d on=fetch-complete to=[-data] m=1></p-d>
-        <json-viewer -data></json-viewer>
+        <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+        <k-fetch -href as=json></k-fetch>
+        <p-d on=fetch-complete to=[-object] m=1 val=detail></p-d>
+        <json-viewer -object></json-viewer>
         
     </div>
 ```
