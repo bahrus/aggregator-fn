@@ -32,50 +32,57 @@ does the following:
 aggregator-fn doesn't make much sense standing on its own.  Let's see how we can use it in the markup below, to handle sending a request to the [Newton Api Advanced Math microservice](https://newton.now.sh/).
 
 ```html
-    <div>
-        <label for=operation>Operation:</label>
-        <input id=operation value=integrate>
-        <!-- pass down (p-d) input changes to operation property-->
-        <p-d on=input to=[-operation] m=1 init-val=value></p-d>
-        <label for=expression>Expression:</label>
-        <input id=expression value="x^2">
-        <p-d on=input to=[-expression] m=1 init-val=value></p-d>
-        <aggregator-fn -operation -expression><script nomodule>
-            ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
-        </script></aggregator-fn>
-        <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
-        <k-fetch -href as=json></k-fetch>
-        <p-d on=fetch-complete to=[-object] m=1 val=detail></p-d>
-        <json-viewer -object></json-viewer>
-        
-    </div>
+<div>
+    <label for=operation>Operation:</label>
+    <input id=operation value=integrate>
+    <!-- "p-d" = pass down -->
+    <p-d on=input to=[-operation] m=1 init-val=value></p-d>
+    <label for=expression>Expression:</label>
+    <input id=expression value="x^2">
+    <p-d on=input to=[-expression] m=1 init-val=value></p-d>
+    <aggregator-fn -operation -expression><script nomodule>
+        ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
+    </script></aggregator-fn>
+    <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+    <k-fetch -href as=json></k-fetch>
+    <p-d on=fetch-complete to=[-object] m=1></p-d>
+    <json-viewer -object></json-viewer>
+    <script type=module>
+        import 'https://cdn.skypack.dev/aggregator-fn@0.0.26?min';
+        import 'https://cdn.skypack.dev/k-fetch@0.0.5?min';
+        import 'https://cdn.skypack.dev/pass-down@0.0.24?min';
+    </script>
+    <script type=module src=https://unpkg.com/@power-elements/json-viewer@2.1.1/json-viewer.js?module></script>
+</div>
 ```
 
-## [Demo](https://jsfiddle.net/bahrus/Ln1cqdgb/)
+## [Demo](https://jsfiddle.net/bahrus/Ln1cqdgb/2/)
 
 <!--
 ```
 <custom-element-demo>
   <template>
-    <div>
-        <label for=operation>Operation:</label>
-        <input id=operation value=integrate>
-        <p-d on=input to=[-operation] m=1></p-d>
-        <label for=expression>Expression:</label>
-        <input id=expression value="x^2">
-        <p-d on=input to=[-expression] m=1></p-d>
-        <aggregator-fn -operation -expression><script nomodule>
-            ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
-        </script></aggregator-fn>
-        <p-d on=value-changed to=[-href] m=1></p-d>
-        <xtal-fetch-get fetch -href></xtal-fetch-get>
-        <p-d on=result-changed to=[-data] m=1></p-d>
-        <json-viewer -data></json-viewer>
-        <script type=module src=https://unpkg.com/@alenaksu/json-viewer@0.1.0/build/index.js?module></script>
-        <script type=module src=https://unpkg.com/aggregator-fn@0.0.18/aggregator-fn.js?module></script>
-        <script type=module src=https://unpkg.com/p-et-alia@0.0.72/p-d.js?module></script>
-        <script type=module src=https://unpkg.com/xtal-fetch@0.0.76/xtal-fetch-get.js?module></script>
-    </div>
+<div>
+    <label for=operation>Operation:</label>
+    <input id=operation value=integrate>
+    <p-d on=input to=[-operation] m=1 init-val=value></p-d>
+    <label for=expression>Expression:</label>
+    <input id=expression value="x^2">
+    <p-d on=input to=[-expression] m=1 init-val=value></p-d>
+    <aggregator-fn -operation -expression><script nomodule>
+        ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
+    </script></aggregator-fn>
+    <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+    <k-fetch -href as=json></k-fetch>
+    <p-d on=fetch-complete to=[-object] m=1></p-d>
+    <json-viewer -object></json-viewer>
+    <script type=module>
+        import 'https://cdn.skypack.dev/aggregator-fn@0.0.26?min';
+        import 'https://cdn.skypack.dev/k-fetch@0.0.5?min';
+        import 'https://cdn.skypack.dev/pass-down@0.0.24?min';
+    </script>
+    <script type=module src=https://unpkg.com/@power-elements/json-viewer@2.1.1/json-viewer.js?module></script>
+</div>
     </template>
 </custom-element-demo>
 ```
