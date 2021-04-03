@@ -1,87 +1,109 @@
-import { XtallatX, define } from 'xtal-element/xtal-latx.js';
-import { hydrate } from 'trans-render/hydrate.js';
-import { destruct, getScript } from 'xtal-element/destruct.js';
-export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
+import { xc } from 'xtal-element/lib/XtalCore.js';
+import { getArgsFromString } from 'xtal-element/lib/getDestructArgs.js';
+import { destruct } from 'xtal-element/lib/destruct.js';
+import { passAttrToProp } from 'xtal-element/lib/passAttrToProp.js';
+/**
+ * @element aggregator-fn
+ */
+export class AggregatorFn extends HTMLElement {
     constructor() {
         super(...arguments);
-        this.aggregator = null;
+        this.self = this;
+        this.propActions = propActions;
+        this.reactor = new xc.Rx(this);
     }
-    onPropsChange(name) {
-        switch (name) {
-            case '_input':
-            case 'aggregator':
-                this.aggregate();
-                break;
-        }
-        super.onPropsChange(name);
+    attributeChangedCallback(n, ov, nv) {
+        passAttrToProp(this, slicedPropDefs, n, ov, nv);
     }
-    get value() {
-        return this._value;
-    }
-    set value(val) {
-        this._value = val;
-        this.de('value', {
-            value: val
-        });
-    }
-    aggregate() {
-        if (this._input === undefined || this.aggregator === undefined || this.aggregator === null || this.disabled)
-            return;
-        this._input.self = this;
-        this.value = this.aggregator(this._input);
-    }
-    getS() {
-        this._script = this.querySelector('script');
-        if (!this._script) {
-            setTimeout(() => {
-                this.getS();
-            }, 10);
-            return;
-        }
-        this.eval();
-    }
-    eval() {
-        const ig = 'fn = ';
-        const sInf = getScript(this._script, ig);
-        if (sInf === null)
-            return;
-        sInf.args.forEach(arg => {
-            if (arg !== '__this')
-                destruct(this, arg);
-        });
-        const inner = this._script.innerHTML.trim().replace(ig, '');
-        const count = AggregatorFn._count++;
-        const fn = `
-var af = customElements.get('${AggregatorFn.is}');
-af['fn_' + ${count}] = ${inner}
-        `;
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.innerHTML = fn;
-        document.head.appendChild(script);
-        this.attachAggregator(count);
-    }
-    attachAggregator(count) {
-        const aggregator = AggregatorFn['fn_' + count];
-        if (aggregator === undefined) {
-            setTimeout(() => {
-                this.attachAggregator(count);
-            }, 10);
-            return;
-        }
-        this.aggregator = aggregator;
+    onPropChange(n, prop, newVal) {
+        this.reactor.addToQueue(prop, newVal);
     }
     connectedCallback() {
         this.style.display = 'none';
-        super.connectedCallback();
-        this.getS();
+        getScript(this);
     }
 }
 AggregatorFn.is = 'aggregator-fn';
-AggregatorFn.attributeProps = ({ disabled, _input, aggregator }) => ({
-    bool: [disabled],
-    str: [name],
-    obj: [_input, aggregator]
-});
+AggregatorFn.observedAttributes = ['disabled'];
 AggregatorFn._count = 0;
-define(AggregatorFn);
+function getScript(self) {
+    const script = self.querySelector('script');
+    if (script === null) {
+        setTimeout(() => {
+            getScript(self);
+        }, 10);
+        return;
+    }
+    self.script = script;
+}
+const attachScript = ({ script, self }) => {
+    const args = getArgsFromString(script.innerHTML);
+    args.forEach(arg => {
+        if (arg !== 'self') {
+            destruct(self, arg);
+        }
+    });
+    const ig = 'fn = ';
+    const inner = script.innerHTML.trim().replace(ig, '');
+    const count = AggregatorFn._count++;
+    const fn = `
+var af = customElements.get('${AggregatorFn.is}');
+af['fn_' + ${count}] = ${inner}
+    `;
+    const headScript = document.createElement('script');
+    headScript.type = 'module';
+    headScript.innerHTML = fn;
+    document.head.appendChild(headScript);
+    attachAggregator(self, count);
+};
+function attachAggregator(self, count) {
+    const aggregator = AggregatorFn['fn_' + count];
+    if (aggregator === undefined) {
+        setTimeout(() => {
+            attachAggregator(self, count);
+        }, 10);
+        return;
+    }
+    self.aggregator = aggregator;
+}
+const linkValue = ({ _input, aggregator, disabled, self }) => {
+    if (_input === undefined || disabled)
+        return;
+    self[slicedPropDefs.propLookup.value.alias] = aggregator(_input);
+};
+const propActions = [
+    attachScript, linkValue
+];
+const baseProp = {
+    async: true,
+    dry: true,
+};
+const objProp1 = {
+    ...baseProp,
+    type: Object,
+};
+const objProp2 = {
+    ...objProp1,
+    stopReactionsIfFalsy: true,
+};
+const propDefMap = {
+    _input: objProp1,
+    aggregator: objProp2,
+    disabled: {
+        ...baseProp,
+        type: Boolean,
+    },
+    value: {
+        ...objProp1,
+        obfuscate: true,
+        notify: true,
+    },
+    script: {
+        ...objProp1,
+        stopReactionsIfFalsy: true,
+        //transience: 0
+    },
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+xc.letThereBeProps(AggregatorFn, slicedPropDefs, 'onPropChange');
+xc.define(AggregatorFn);
