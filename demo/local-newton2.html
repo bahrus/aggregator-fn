@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for=operation>Operation:</label>
+        <input id=operation value=integrate>
+        <!-- pass down (p-d) input changes to operation property-->
+        <p-d on=input to=[-operation] m=1 init-val=value></p-d>
+        <label for=expression>Expression:</label>
+        <input id=expression value="x^2">
+        <p-d on=input to=[-expression] m=1 init-val=value></p-d>
+        <aggregator-fn -operation -expression><script nomodule>
+            ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
+        </script></aggregator-fn>
+        <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+        <k-fetch -href as=json></k-fetch>
+        <p-d on=fetch-complete to=[-data] m=1 val=detail></p-d>
+        <json-viewer -data></json-viewer>
+        
+    </div>
+        <script type=importmap>
+        {
+            "imports": {
+                "xtal-element/": "../node_modules/xtal-element/",
+                "trans-render/": "../node_modules/trans-render/",
+                "on-to-me/": "../node_modules/on-to-me/",
+                "mut-obs/": "../node_modules/mut-obs/",
+                "@tiny-lit/": "../node_modules/@tiny-lit/"
+            }
+        }
+        </script>
+        <script  type=module>
+            import '../aggregator-fn2.js';
+            import '../node_modules/pass-down/p-d.js';
+            import '../node_modules/@alenaksu/json-viewer/build/index.js';
+            import '../node_modules/k-fetch/k-fetch.js';
+        </script>
+</body>
+</html>

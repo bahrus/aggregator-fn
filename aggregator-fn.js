@@ -27,7 +27,7 @@ export class AggregatorFn extends XtallatX(hydrate(HTMLElement)) {
     aggregate() {
         if (this._input === undefined || this.aggregator === undefined || this.aggregator === null || this.disabled)
             return;
-        this._input.__this = this;
+        this._input.self = this;
         this.value = this.aggregator(this._input);
     }
     getS() {
