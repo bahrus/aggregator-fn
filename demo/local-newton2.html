@@ -19,8 +19,8 @@
         </script></aggregator-fn>
         <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
         <k-fetch -href as=json></k-fetch>
-        <p-d on=fetch-complete to=[-data] m=1 val=detail></p-d>
-        <json-viewer -data></json-viewer>
+        <p-d on=fetch-complete to=[-object] m=1 val=detail></p-d>
+        <json-viewer -object></json-viewer>
         
     </div>
         <script type=importmap>
@@ -29,15 +29,15 @@
                 "xtal-element/": "../node_modules/xtal-element/",
                 "trans-render/": "../node_modules/trans-render/",
                 "on-to-me/": "../node_modules/on-to-me/",
-                "mut-obs/": "../node_modules/mut-obs/",
-                "@tiny-lit/": "../node_modules/@tiny-lit/"
+                "mut-obs/": "../node_modules/mut-obs/"
+                
             }
         }
         </script>
         <script  type=module>
             import '../aggregator-fn2.js';
             import '../node_modules/pass-down/p-d.js';
-            import '../node_modules/@alenaksu/json-viewer/build/index.js';
+            import '../node_modules/@power-elements/json-viewer/json-viewer.js';
             import '../node_modules/k-fetch/k-fetch.js';
         </script>
 </body>

@@ -17,9 +17,9 @@
     "xtal-element": "0.0.373"
   },
   "devDependencies": {
-    "@alenaksu/json-viewer": "0.2.0",
-    "k-fetch": "0.0.4",
-    "pass-down": "0.0.23",
+    "@power-elements/json-viewer": "2.1.1",
+    "k-fetch": "0.0.5",
+    "pass-down": "0.0.24",
     "xtal-test": "0.0.50"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
