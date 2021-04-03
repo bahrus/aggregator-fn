@@ -19,7 +19,7 @@
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "k-fetch": "0.0.5",
-    "pass-down": "0.0.24",
+    "pass-down": "0.0.25",
     "xtal-test": "0.0.50"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
