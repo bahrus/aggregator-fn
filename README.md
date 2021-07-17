@@ -100,7 +100,7 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 
 ## Accessing the custom element itself
 
-In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, self:
+In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, "self":
 
 ```html
 <aggregator-fn>
