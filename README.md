@@ -113,6 +113,8 @@ In some (rare?) circumstances, you may need the aggregator function to have acce
 </aggregator-fn>
 ```
 
+## [API Reference](https://bahrus.github.io/wc-info/cdn-base.html?npmPackage=aggregator-fn)
+
 ## Viewing Your Element
 
 1.  Install node.js

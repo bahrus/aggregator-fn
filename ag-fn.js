@@ -7,18 +7,21 @@ import { passAttrToProp } from 'xtal-element/lib/passAttrToProp.js';
  * @tag ag-fn
  */
 export class AgFn extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        /**
-         * @private
-         */
-        this.self = this;
-        this.propActions = propActions;
-        this.reactor = new xc.Rx(this);
-    }
+    static is = 'ag-fn';
+    static observedAttributes = ['disabled'];
     attributeChangedCallback(n, ov, nv) {
         passAttrToProp(this, slicedPropDefs, n, ov, nv);
     }
+    /**
+     * @private
+     */
+    static _count = 0;
+    /**
+     * @private
+     */
+    self = this;
+    propActions = propActions;
+    reactor = new xc.Rx(this);
     onPropChange(n, prop, newVal) {
         this.reactor.addToQueue(prop, newVal);
     }
@@ -27,12 +30,6 @@ export class AgFn extends HTMLElement {
         getScript(this);
     }
 }
-AgFn.is = 'ag-fn';
-AgFn.observedAttributes = ['disabled'];
-/**
- * @private
- */
-AgFn._count = 0;
 function getScript(self) {
     const script = self.querySelector('script');
     if (script === null) {
