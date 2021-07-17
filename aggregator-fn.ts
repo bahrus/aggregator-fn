@@ -1,4 +1,4 @@
-import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
+import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor} from 'xtal-element/lib/XtalCore.js';
 import {getArgsFromString} from 'xtal-element/lib/getDestructArgs.js';
 import {destruct} from 'xtal-element/lib/destruct.js';
 import {passAttrToProp} from 'xtal-element/lib/passAttrToProp.js';
@@ -21,7 +21,7 @@ export class AggregatorFn extends HTMLElement implements ReactiveSurface{
 
     self = this;
     propActions = propActions;
-    reactor = new xc.Rx(this);
+    reactor: IReactor = new xc.Rx(this);
 
     onPropChange(n: string, prop: PropDef, newVal: any){
         this.reactor.addToQueue(prop, newVal);

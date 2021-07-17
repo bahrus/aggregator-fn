@@ -17,7 +17,7 @@
         <aggregator-fn -operation -expression><script nomodule>
             ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
         </script></aggregator-fn>
-        <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+        <p-d on=value-changed to=[-href] m=1 as=str-attr></p-d>
         <k-fetch -href as=json></k-fetch>
         <p-d on=fetch-complete to=[-object] m=1 val=detail></p-d>
         <json-viewer -object></json-viewer>
