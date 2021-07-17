@@ -2,6 +2,14 @@
   "name": "aggregator-fn",
   "version": "0.0.27",
   "description": "Evaluate expressions in inline script tag.",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-elements",
+    "custom-element",
+    "bind",
+    "dom-bind"
+  ],
   "main": "aggregator-fn.js",
   "module": "aggregator-fn.js",
   "scripts": {
@@ -18,9 +26,11 @@
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
+    "@skypack/package-check": "0.2.2",
     "k-fetch": "0.0.5",
     "pass-down": "0.0.59",
-    "xtal-test": "0.0.51"
+    "xtal-test": "0.0.51",
+    "@custom-elements-manifest/analyzer": "0.4.12"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
