@@ -2,7 +2,7 @@ import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor} from 'xt
 import {getArgsFromString} from 'xtal-element/lib/getDestructArgs.js';
 import {destruct} from 'xtal-element/lib/destruct.js';
 import {passAttrToProp} from 'xtal-element/lib/passAttrToProp.js';
-
+import {AgFnProps} from './types.d.js';
 /**
  * @element ag-fn
  * @tag ag-fn
@@ -13,14 +13,16 @@ export class AgFn extends HTMLElement implements ReactiveSurface{
     attributeChangedCallback(n: string, ov: string, nv: string){
         passAttrToProp(this, slicedPropDefs,n,ov, nv);
     }
+    /**
+     * @private
+     */
     static _count = 0;
-    _input: any;
-    disabled: boolean | undefined;
-    value: any;
-    script: HTMLScriptElement | undefined;
-    aggregator: ((input: any) => any) | undefined;
-
+    
+    /**
+     * @private
+     */
     self = this;
+
     propActions = propActions;
     reactor: IReactor = new xc.Rx(this);
 
@@ -33,6 +35,7 @@ export class AgFn extends HTMLElement implements ReactiveSurface{
         getScript(this);
     }
 }
+export interface AgFn extends AgFnProps{}
 type A = AgFn;
 
 function getScript(self: A){

@@ -9,6 +9,9 @@ import { passAttrToProp } from 'xtal-element/lib/passAttrToProp.js';
 export class AgFn extends HTMLElement {
     constructor() {
         super(...arguments);
+        /**
+         * @private
+         */
         this.self = this;
         this.propActions = propActions;
         this.reactor = new xc.Rx(this);
@@ -26,6 +29,9 @@ export class AgFn extends HTMLElement {
 }
 AgFn.is = 'ag-fn';
 AgFn.observedAttributes = ['disabled'];
+/**
+ * @private
+ */
 AgFn._count = 0;
 function getScript(self) {
     const script = self.querySelector('script');

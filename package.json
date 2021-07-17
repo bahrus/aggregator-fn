@@ -50,5 +50,6 @@
   "bugs": {
     "url": "https://github.com/bahrus/aggregator-fn/issues"
   },
-  "homepage": "https://github.com/bahrus/aggregator-fn#readme"
+  "homepage": "https://github.com/bahrus/aggregator-fn#readme",
+  "customElements": "custom-elements.json"
 }

@@ -1,0 +1,429 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "ag-fn.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AgFn",
+          "members": [
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n"
+                },
+                {
+                  "name": "prop"
+                },
+                {
+                  "name": "newVal"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "privacy": "private",
+              "default": "this"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\n    attachScript, linkValue\n]",
+              "type": {
+                "text": "array"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "default": "new xc.Rx(this)"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "ag-fn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AgFn",
+          "declaration": {
+            "name": "AgFn",
+            "module": "ag-fn.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "ag-fn.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AgFn",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'ag-fn'"
+            },
+            {
+              "kind": "field",
+              "name": "_count",
+              "type": {
+                "text": "number"
+              },
+              "static": true,
+              "default": "0",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "default": "this",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\r\n    attachScript, linkValue\r\n]"
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "default": "new xc.Rx(this)"
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "ag-fn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AgFn",
+          "declaration": {
+            "name": "AgFn",
+            "module": "ag-fn.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "aggregator-fn.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AggregatorFn",
+          "superclass": {
+            "name": "AgFn",
+            "module": "/ag-fn.js"
+          },
+          "tagName": "aggregator-fn",
+          "customElement": true,
+          "attributes": [
+            {
+              "name": "disabled",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'ag-fn'",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_count",
+              "type": {
+                "text": "number"
+              },
+              "static": true,
+              "default": "0",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "default": "this",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\r\n    attachScript, linkValue\r\n]",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "default": "new xc.Rx(this)",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AggregatorFn",
+          "declaration": {
+            "name": "AggregatorFn",
+            "module": "aggregator-fn.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "aggregator-fn.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "AggregatorFn",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'aggregator-fn'",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_count",
+              "type": {
+                "text": "number"
+              },
+              "static": true,
+              "default": "0",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "default": "this",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\r\n    attachScript, linkValue\r\n]",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "default": "new xc.Rx(this)",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "AgFn",
+            "module": "/ag-fn.js"
+          },
+          "tagName": "aggregator-fn",
+          "customElement": true,
+          "attributes": [
+            {
+              "name": "disabled",
+              "inheritedFrom": {
+                "name": "AgFn",
+                "module": "ag-fn.ts"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AggregatorFn",
+          "declaration": {
+            "name": "AggregatorFn",
+            "module": "aggregator-fn.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "types.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/test-all.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/test-all.ts",
+      "declarations": [],
+      "exports": []
+    }
+  ]
+}
