@@ -8,7 +8,7 @@
 
 # aggregator-fn
 
-\<aggregator-fn\> is a non-visual custom element that aggregates properties together using an inline JS expression.
+\<aggregator-fn\> (or \<ag-fn\> for short) is a non-visual custom element that aggregates properties together using an inline JS expression, and which can act as a "piping" processor between two or more elements.
 
 It is most useful for markup-centric applications, consisting of web components that are not controlled by some state managed component container -- for example a ["peer-to-peer" binding framework](https://github.com/bahrus/p-et-alia).
 
@@ -22,6 +22,14 @@ See [form-matter](https://github.com/bahrus/form-matter) for an alternative.
 <aggregator-fn><script nomodule>
     ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
 </script></aggregator-fn>
+```
+
+or
+
+```html
+<ag-fn><script nomodule>
+    ({operation, expression}) => `https://newton.now.sh/${operation}/${encodeURI(expression)}`
+</script></ag-fn>
 ```
 
 does the following:
@@ -98,7 +106,7 @@ In some (rare?) circumstances, you may need the aggregator function to have acce
 <aggregator-fn>
     <script nomodule>
         ({a, b, c, self}) => {
-            console.log(self;
+            console.log(self);
             return a + b + c;
         }
     </script>
@@ -106,6 +114,11 @@ In some (rare?) circumstances, you may need the aggregator function to have acce
 ```
 
 ## Viewing Your Element
+
+1.  Install node.js
+2.  Install git.  Fork or clone this repo.
+3.  From a command window, navigate to the folder created in step 2.
+4.  Now run:
 
 ```
 $ npm run serve
