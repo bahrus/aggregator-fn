@@ -10,16 +10,29 @@
     "bind",
     "dom-bind"
   ],
-  "main": "aggregator-fn.js",
-  "module": "aggregator-fn.js",
+  "main": "ag-fn.js",
+  "module": "ag-fn.js",
   "scripts": {
     "serve": "node node_modules/xtal-test/serve.js",
-    "test": "node test/test-all.js"
+    "package-check": "package-check",
+    "test": "node test/test-all.js",
+    "doc": "custom-elements-manifest analyze"
   },
+  "exports": {
+    ".": "./ag-fn.js",
+    "./aggregator-fn.js": "./aggregator-fn.js",
+    "./ag-fn.js": "./ag-fn.js"
+  },
+  "files": [
+    "ag*.*",
+    "types.d.ts",
+    "custom-elements.json"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/aggregator-fn.git"
   },
+  "types": "types.d.ts",
   "dependencies": {
     "trans-render": "0.0.291",
     "xtal-element": "0.0.414"
