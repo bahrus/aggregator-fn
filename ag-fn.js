@@ -73,6 +73,7 @@ function attachAggregator(self, count) {
 const linkValue = ({ _input, aggregator, disabled, self }) => {
     if (_input === undefined || disabled)
         return;
+    _input.self = self;
     self[slicedPropDefs.propLookup.value.alias] = aggregator(_input);
 };
 const propActions = [
