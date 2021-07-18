@@ -76,7 +76,10 @@ const linkValue = ({ _input, aggregator, disabled, isC, self }) => {
         return;
     _input.self = self;
     //(<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
-    self.value = aggregator(_input);
+    const val = aggregator(_input);
+    console.log(val);
+    self.value = val;
+    console.log(val);
 };
 const propActions = [
     attachScript, linkValue
