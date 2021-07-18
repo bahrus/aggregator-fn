@@ -91,7 +91,7 @@ const linkValue = ({_input, aggregator, disabled, isC, self}: A) => {
     const val = aggregator!(_input);
     console.log(val);
     self.value = val;
-    console.log(val);
+    console.log(self.value);
 }
 
 const propActions = [
