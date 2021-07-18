@@ -5,6 +5,6 @@ import { define } from 'xtal-element/lib/define.js';
  * @tag aggregator-fn
  */
 export class AggregatorFn extends AgFn {
+    static is = 'aggregator-fn';
 }
-AggregatorFn.is = 'aggregator-fn';
 define(AggregatorFn);

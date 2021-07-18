@@ -35,7 +35,7 @@
   "types": "types.d.ts",
   "dependencies": {
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.415"
+    "xtal-element": "0.0.416"
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
