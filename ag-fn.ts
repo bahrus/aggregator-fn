@@ -33,6 +33,7 @@ export class AgFn extends HTMLElement implements ReactiveSurface{
     connectedCallback(){
         this.style.display = 'none';
         getScript(this);
+        this.isC = true;
     }
 }
 export interface AgFn extends AgFnProps{}
@@ -49,7 +50,7 @@ function getScript(self: A){
     self.script = script;
 }
 
-const attachScript = ({script, self}: A) => {
+const attachScript = ({script, isC, self}: A) => {
     const args = getArgsFromString(script!.innerHTML);
     
     args.forEach(arg =>{
@@ -83,7 +84,7 @@ function attachAggregator(self: A, count: number){
     self.aggregator = aggregator;    
 }
 
-const linkValue = ({_input, aggregator, disabled, self}: A) => {
+const linkValue = ({_input, aggregator, disabled, isC, self}: A) => {
     if(_input === undefined ||  disabled) return;
     _input.self = self;
     (<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
@@ -105,13 +106,20 @@ const objProp2: PropDef = {
     ...objProp1,
     stopReactionsIfFalsy: true,
 }
+const boolProp1: PropDef = {
+    ...baseProp,
+    type: Boolean,
+};
+const boolProp2: PropDef = {
+    ...boolProp1,
+    stopReactionsIfFalsy: true,
+}
 const propDefMap : PropDefMap<AgFn> = {
     _input: objProp1,
     aggregator: objProp2,
-    disabled: {
-        ...baseProp,
-        type: Boolean,
-    },
+    disabled: boolProp1,
+    debug: boolProp1,
+    isC: boolProp2,
     value: {
         ...objProp1,
         obfuscate: true,

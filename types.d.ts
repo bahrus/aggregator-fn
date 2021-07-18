@@ -4,4 +4,6 @@ export interface AgFnProps{
     value: any;
     script: HTMLScriptElement | undefined;
     aggregator: ((input: any) => any) | undefined;
+    isC: boolean;
+    debug: boolean;
 }

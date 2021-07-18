@@ -28,6 +28,7 @@ export class AgFn extends HTMLElement {
     connectedCallback() {
         this.style.display = 'none';
         getScript(this);
+        this.isC = true;
     }
 }
 function getScript(self) {
@@ -40,7 +41,7 @@ function getScript(self) {
     }
     self.script = script;
 }
-const attachScript = ({ script, self }) => {
+const attachScript = ({ script, isC, self }) => {
     const args = getArgsFromString(script.innerHTML);
     args.forEach(arg => {
         if (arg !== 'self') {
@@ -70,7 +71,7 @@ function attachAggregator(self, count) {
     }
     self.aggregator = aggregator;
 }
-const linkValue = ({ _input, aggregator, disabled, self }) => {
+const linkValue = ({ _input, aggregator, disabled, isC, self }) => {
     if (_input === undefined || disabled)
         return;
     _input.self = self;
@@ -91,13 +92,20 @@ const objProp2 = {
     ...objProp1,
     stopReactionsIfFalsy: true,
 };
+const boolProp1 = {
+    ...baseProp,
+    type: Boolean,
+};
+const boolProp2 = {
+    ...boolProp1,
+    stopReactionsIfFalsy: true,
+};
 const propDefMap = {
     _input: objProp1,
     aggregator: objProp2,
-    disabled: {
-        ...baseProp,
-        type: Boolean,
-    },
+    disabled: boolProp1,
+    debug: boolProp1,
+    isC: boolProp2,
     value: {
         ...objProp1,
         obfuscate: true,
