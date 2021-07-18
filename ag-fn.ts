@@ -87,7 +87,8 @@ function attachAggregator(self: A, count: number){
 const linkValue = ({_input, aggregator, disabled, isC, self}: A) => {
     if(_input === undefined ||  disabled) return;
     _input.self = self;
-    (<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
+    //(<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
+    self.value = aggregator!(_input);
 }
 
 const propActions = [
@@ -122,7 +123,6 @@ const propDefMap : PropDefMap<AgFn> = {
     isC: boolProp2,
     value: {
         ...objProp1,
-        obfuscate: true,
         notify: true,
     },
     script: {

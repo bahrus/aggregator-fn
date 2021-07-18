@@ -75,7 +75,8 @@ const linkValue = ({ _input, aggregator, disabled, isC, self }) => {
     if (_input === undefined || disabled)
         return;
     _input.self = self;
-    self[slicedPropDefs.propLookup.value.alias] = aggregator(_input);
+    //(<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
+    self.value = aggregator(_input);
 };
 const propActions = [
     attachScript, linkValue
@@ -108,7 +109,6 @@ const propDefMap = {
     isC: boolProp2,
     value: {
         ...objProp1,
-        obfuscate: true,
         notify: true,
     },
     script: {
