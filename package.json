@@ -1,6 +1,6 @@
 {
   "name": "aggregator-fn",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "Evaluate expressions in inline script tag.",
   "keywords": [
     "web-components",
