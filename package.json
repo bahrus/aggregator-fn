@@ -35,13 +35,13 @@
   "types": "types.d.ts",
   "dependencies": {
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.416"
+    "xtal-element": "0.0.417"
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "@skypack/package-check": "0.2.2",
     "k-fetch": "0.0.5",
-    "pass-down": "0.0.59",
+    "pass-down": "0.0.71",
     "xtal-test": "0.0.51",
     "@custom-elements-manifest/analyzer": "0.4.12"
   },
