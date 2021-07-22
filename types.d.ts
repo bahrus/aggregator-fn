@@ -6,4 +6,5 @@ export interface AgFnProps{
     aggregator: ((input: any) => any) | undefined;
     isC: boolean;
     debug: boolean;
+    hostSelector: string;
 }

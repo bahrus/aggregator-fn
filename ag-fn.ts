@@ -87,6 +87,13 @@ function attachAggregator(self: A, count: number){
 const linkValue = ({_input, aggregator, disabled, isC, self}: A) => {
     if(_input === undefined ||  disabled) return;
     _input.self = self;
+    let host;
+    if(self.hostSelector!== undefined){
+        host = self.closest(self.hostSelector);
+    }else{
+        host = (<any>self.getRootNode()).host;
+    }
+    if(host) _input.host = host;
     (<any>self)[slicedPropDefs.propLookup!.value!.alias!] = aggregator!(_input); 
 }
 

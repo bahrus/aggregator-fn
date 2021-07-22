@@ -75,6 +75,15 @@ const linkValue = ({ _input, aggregator, disabled, isC, self }) => {
     if (_input === undefined || disabled)
         return;
     _input.self = self;
+    let host;
+    if (self.hostSelector !== undefined) {
+        host = self.closest(self.hostSelector);
+    }
+    else {
+        host = self.getRootNode().host;
+    }
+    if (host)
+        _input.host = host;
     self[slicedPropDefs.propLookup.value.alias] = aggregator(_input);
 };
 const propActions = [

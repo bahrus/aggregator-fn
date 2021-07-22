@@ -98,20 +98,26 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 
 ## [Post IE/11 Support](https://docs.microsoft.com/en-us/deployedge/edge-ie-mode)
 
-## Accessing the custom element itself
+## Accessing the custom element itself, containing host
 
-In some (rare?) circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, "self":
+In some circumstances, you may need the aggregator function to have access to the context from which it is being called.  To do this, add an argument, "self":
 
 ```html
-<aggregator-fn>
+<ag-fn>
     <script nomodule>
         ({a, b, c, self}) => {
             console.log(self);
             return a + b + c;
         }
     </script>
-</aggregator-fn>
+</ag-fn>
 ```
+
+You can also reference the host component if it is available.  The host is obtained via self.getRootNode().host.  This makes sense if aggregator-fn/ag-fn is used within a traditional web component that uses Shadow DOM.  If it is used inside a web component that doesn't use shadowDOM, or some other containing DOM element you want to give special access to and call it "host", use property/attribute hostSelector/host-selector.
+
+
+
+
 
 ## [API Reference](https://bahrus.github.io/wc-info/cdn-base.html?npmPackage=aggregator-fn)
 
