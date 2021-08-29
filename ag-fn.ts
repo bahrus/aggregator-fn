@@ -108,11 +108,15 @@ const baseProp: PropDef = {
 const objProp1 : PropDef = {
     ...baseProp,
     type: Object,
-}
+};
 const objProp2: PropDef = {
     ...objProp1,
     stopReactionsIfFalsy: true,
-}
+};
+const objProp3: PropDef = {
+    ...objProp1,
+    dry: false,
+};
 const boolProp1: PropDef = {
     ...baseProp,
     type: Boolean,
@@ -122,7 +126,7 @@ const boolProp2: PropDef = {
     stopReactionsIfFalsy: true,
 }
 const propDefMap : PropDefMap<AgFn> = {
-    _input: objProp1,
+    _input: objProp3,
     aggregator: objProp2,
     disabled: boolProp1,
     debug: boolProp1,

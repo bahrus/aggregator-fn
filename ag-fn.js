@@ -101,6 +101,10 @@ const objProp2 = {
     ...objProp1,
     stopReactionsIfFalsy: true,
 };
+const objProp3 = {
+    ...objProp1,
+    dry: false,
+};
 const boolProp1 = {
     ...baseProp,
     type: Boolean,
@@ -110,7 +114,7 @@ const boolProp2 = {
     stopReactionsIfFalsy: true,
 };
 const propDefMap = {
-    _input: objProp1,
+    _input: objProp3,
     aggregator: objProp2,
     disabled: boolProp1,
     debug: boolProp1,
