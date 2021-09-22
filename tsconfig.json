@@ -9,7 +9,7 @@
 		"watch": true,
 	},
 	"files": [
-		"ag-fn2.ts",
+		"ag-fn.ts",
 		"aggregator-fn.ts"
 	],
 	"exclude":[

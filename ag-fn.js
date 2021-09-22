@@ -1,135 +1,94 @@
-import { xc } from 'xtal-element/lib/XtalCore.js';
+import { XE } from 'xtal-element/src/XE.js';
 import { getArgsFromString } from 'xtal-element/lib/getDestructArgs.js';
 import { destruct } from 'xtal-element/lib/destruct.js';
-import { passAttrToProp } from 'xtal-element/lib/passAttrToProp.js';
-/**
- * @element ag-fn
- * @tag ag-fn
- */
-export class AgFn extends HTMLElement {
-    static is = 'ag-fn';
-    static observedAttributes = ['disabled'];
-    attributeChangedCallback(n, ov, nv) {
-        passAttrToProp(this, slicedPropDefs, n, ov, nv);
-    }
-    /**
-     * @private
-     */
+export class AgFnCore extends HTMLElement {
     static _count = 0;
-    /**
-     * @private
-     */
-    self = this;
-    propActions = propActions;
-    reactor = new xc.Rx(this);
-    onPropChange(n, prop, newVal) {
-        this.reactor.addToQueue(prop, newVal);
-    }
-    connectedCallback() {
-        this.style.display = 'none';
-        getScript(this);
-        this.isC = true;
-    }
-}
-function getScript(self) {
-    const script = self.querySelector('script');
-    if (script === null) {
-        setTimeout(() => {
-            getScript(self);
-        }, 10);
-        return;
-    }
-    self.script = script;
-}
-const attachScript = ({ script, isC, self }) => {
-    const args = getArgsFromString(script.innerHTML);
-    args.forEach(arg => {
-        if (arg !== 'self') {
-            destruct(self, arg);
+    getScript(self) {
+        const script = this.querySelector('script');
+        if (script === null) {
+            setTimeout(() => {
+                this.getScript(this);
+            }, 10);
+            return;
         }
-    });
-    const ig = 'fn = ';
-    const inner = script.innerHTML.trim().replace(ig, '');
-    const count = AgFn._count++;
-    const fn = `
-var af = customElements.get('${AgFn.is}');
-af['fn_' + ${count}] = ${inner}
-    `;
-    const headScript = document.createElement('script');
-    headScript.type = 'module';
-    headScript.innerHTML = fn;
-    document.head.appendChild(headScript);
-    attachAggregator(self, count);
-};
-function attachAggregator(self, count) {
-    const aggregator = AgFn['fn_' + count];
-    if (aggregator === undefined) {
-        setTimeout(() => {
-            attachAggregator(self, count);
-        }, 10);
-        return;
+        this.script = script;
     }
-    self.aggregator = aggregator;
+    attachScript({ script }) {
+        const args = getArgsFromString(script.innerHTML);
+        args.forEach(arg => {
+            if (arg !== 'self') {
+                destruct(this, arg);
+            }
+        });
+        const ig = 'fn = ';
+        const inner = script.innerHTML.trim().replace(ig, '');
+        const count = AgFnCore._count++;
+        const fn = `
+    var af = customElements.get('${tagName}');
+    af['fn_' + ${count}] = ${inner}
+        `;
+        const headScript = document.createElement('script');
+        headScript.type = 'module';
+        headScript.innerHTML = fn;
+        document.head.appendChild(headScript);
+        this.attachAggregator(this, count);
+    }
+    attachAggregator(self, count) {
+        const agfn = customElements.get('ag-fn');
+        const aggregator = agfn['fn_' + count];
+        if (aggregator === undefined) {
+            setTimeout(() => {
+                this.attachAggregator(this, count);
+            }, 10);
+            return;
+        }
+        this.aggregator = aggregator;
+    }
+    updateValue({ _input, disabled, hostSelector, aggregator }) {
+        if (_input === undefined || disabled)
+            return;
+        _input.self = this;
+        let host;
+        if (hostSelector !== undefined) {
+            host = this.closest(hostSelector);
+        }
+        else {
+            host = this.getRootNode().host;
+        }
+        if (host)
+            _input.host = host;
+        this.value = aggregator(_input);
+    }
 }
-const linkValue = ({ _input, aggregator, disabled, isC, self }) => {
-    if (_input === undefined || disabled)
-        return;
-    _input.self = self;
-    let host;
-    if (self.hostSelector !== undefined) {
-        host = self.closest(self.hostSelector);
-    }
-    else {
-        host = self.getRootNode().host;
-    }
-    if (host)
-        _input.host = host;
-    self[slicedPropDefs.propLookup.value.alias] = aggregator(_input);
-};
-const propActions = [
-    attachScript, linkValue
-];
-const baseProp = {
-    async: true,
-    dry: true,
-};
-const objProp1 = {
-    ...baseProp,
-    type: Object,
-};
-const objProp2 = {
-    ...objProp1,
-    stopReactionsIfFalsy: true,
-};
-const objProp3 = {
-    ...objProp1,
-    dry: false,
-};
-const boolProp1 = {
-    ...baseProp,
-    type: Boolean,
-};
-const boolProp2 = {
-    ...boolProp1,
-    stopReactionsIfFalsy: true,
-};
-const propDefMap = {
-    _input: objProp3,
-    aggregator: objProp2,
-    disabled: boolProp1,
-    debug: boolProp1,
-    isC: boolProp2,
-    value: {
-        ...objProp1,
-        notify: true,
-        obfuscate: true,
+const tagName = 'ag-fn';
+const ce = new XE({
+    config: {
+        tagName,
+        propDefaults: {
+            isC: true,
+            debug: false,
+        },
+        propInfo: {
+            value: {
+                notify: {
+                    dispatch: true,
+                }
+            }
+        },
+        actions: {
+            getScript: {
+                ifAllOf: ['isC']
+            },
+            attachScript: {
+                ifAllOf: ['script']
+            },
+            updateValue: {
+                ifKeyIn: ['_input'],
+                ifAllOf: ['aggregator', 'isC'],
+                ifNoneOf: ['disabled']
+            }
+        }
     },
-    script: {
-        ...objProp1,
-        stopReactionsIfFalsy: true,
-        //transience: 0
-    },
-};
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(AgFn, slicedPropDefs, 'onPropChange');
-xc.define(AgFn);
+    superclass: AgFnCore
+});
+export const AgFn = ce.classDef;
