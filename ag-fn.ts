@@ -65,6 +65,11 @@ export class AgFnCore extends HTMLElement implements AgFnActions{
         if(host) _input.host = host;
         this.value = aggregator!(_input); 
     }
+
+    /**
+     * @property aggregator
+     */
+    declare aggregator: ((input: any) => any) | undefined;
 }
 
 const tagName = 'ag-fn';
