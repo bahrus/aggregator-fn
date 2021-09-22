@@ -1,6 +1,10 @@
 import { XE } from 'xtal-element/src/XE.js';
 import { getArgsFromString } from 'xtal-element/lib/getDestructArgs.js';
 import { destruct } from 'xtal-element/lib/destruct.js';
+/**
+ * @tag 'ag-fn'
+ * @element 'ag-fn'
+ */
 export class AgFnCore extends HTMLElement {
     static _count = 0;
     getScript(self) {

@@ -3,7 +3,11 @@ import {getArgsFromString} from 'xtal-element/lib/getDestructArgs.js';
 import {destruct} from 'xtal-element/lib/destruct.js';
 import {AgFnProps, AgFnActions} from './types';
 
-export class AgFnCore extends HTMLElement implements AgFnActions{
+/**
+ * @tag 'ag-fn'
+ * @element 'ag-fn'
+ */
+export class AgFnCore extends HTMLElement implements AgFnProps, AgFnActions{
     static _count = 0;
     getScript(self: this){
         const script = this.querySelector('script');
@@ -67,14 +71,27 @@ export class AgFnCore extends HTMLElement implements AgFnActions{
     }
 
     /**
-     * @property aggregator
+     * @private
+     * @prop {function} [aggregator] - The evaluated aggregator function
      */
     declare aggregator: ((input: any) => any) | undefined;
+
+    declare disabled: boolean | undefined;
+    declare _input: any;
+    declare value: any;
+    declare script: HTMLScriptElement | undefined;
+    declare isC: boolean;
+    declare debug: boolean;
+
+    /**
+     * @prop {string} [hostSelector] - Specify the closest containing element matching this css selector as the host
+     * @attr {string} [host-selector] Specify the closest containing element matching this css selector as the host
+     */
+    declare hostSelector: string;
+
 }
 
 const tagName = 'ag-fn';
-
-export interface AgFnCore extends AgFnProps{}
 
 const ce = new XE<AgFnProps, AgFnActions>({
     config:{

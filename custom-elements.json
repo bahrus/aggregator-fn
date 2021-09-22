@@ -63,6 +63,7 @@
           "superclass": {
             "name": "HTMLElement"
           },
+          "tagName": "'ag-fn'",
           "customElement": true
         },
         {
@@ -166,12 +167,74 @@
               "name": "aggregator",
               "type": {
                 "text": "((input: any) => any) | undefined"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean | undefined"
               }
+            },
+            {
+              "kind": "field",
+              "name": "_input",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "script",
+              "type": {
+                "text": "HTMLScriptElement | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isC",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "debug",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "hostSelector",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "host-selector"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "host-selector",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "hostSelector",
+              "description": "Specify the closest containing element matching this css selector as the host"
             }
           ],
           "superclass": {
             "name": "HTMLElement"
           },
+          "tagName": "'ag-fn'",
           "customElement": true
         },
         {
