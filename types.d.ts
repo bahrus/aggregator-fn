@@ -8,3 +8,9 @@ export interface AgFnProps{
     debug: boolean;
     hostSelector: string;
 }
+
+export interface AgFnActions{
+    getScript(self: this): void;
+    attachScript(self: this): void;
+    updateValue(self: this): void;
+}

@@ -34,16 +34,16 @@
   },
   "types": "types.d.ts",
   "dependencies": {
-    "trans-render": "0.0.291",
-    "xtal-element": "0.0.417"
+    "trans-render": "0.0.409",
+    "xtal-element": "0.0.442"
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "@skypack/package-check": "0.2.2",
     "k-fetch": "0.0.5",
-    "pass-down": "0.0.71",
+    "pass-down": "0.0.112",
     "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.4.12"
+    "@custom-elements-manifest/analyzer": "0.5.3"
   },
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
