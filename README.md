@@ -64,33 +64,31 @@ aggregator-fn doesn't make much sense standing on its own.  Let's see how we can
 </div>
 ```
 
-## [Demo](https://jsfiddle.net/bahrus/Ln1cqdgb/2/)
+## [Demo](https://codepen.io/bahrus/pen/VwWdGBJ)
 
 <!--
 ```
 <custom-element-demo>
   <template>
-<div>
     <label for=operation>Operation:</label>
     <input id=operation value=integrate>
     <p-d on=input to=[-operation] m=1 init-val=value></p-d>
     <label for=expression>Expression:</label>
     <input id=expression value="x^2">
     <p-d on=input to=[-expression] m=1 init-val=value></p-d>
-    <aggregator-fn -operation -expression><script nomodule>
+    <ag-fn -operation -expression><script nomodule>
         ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
-    </script></aggregator-fn>
-    <p-d on=value-changed to=[-href] m=1 as-str-attr></p-d>
+    </script></ag-fn>
+    <p-d on=value-changed to=[-href] m=1 as=str-attr></p-d>
     <k-fetch -href as=json></k-fetch>
     <p-d on=fetch-complete to=[-object] m=1></p-d>
     <json-viewer -object></json-viewer>
     <script type=module>
-        import 'https://cdn.skypack.dev/aggregator-fn@0.0.26?min';
-        import 'https://cdn.skypack.dev/k-fetch@0.0.5?min';
-        import 'https://cdn.skypack.dev/pass-down@0.0.24?min';
+        import 'https://cdn.skypack.dev/aggregator-fn?min';
+        import 'https://cdn.skypack.dev/k-fetch?min';
+        import 'https://cdn.skypack.dev/pass-down/p-d.js?min';
     </script>
     <script type=module src=https://unpkg.com/@power-elements/json-viewer@2.1.1/json-viewer.js?module></script>
-</div>
     </template>
 </custom-element-demo>
 ```
