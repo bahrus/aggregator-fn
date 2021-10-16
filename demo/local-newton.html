@@ -12,8 +12,8 @@
     <label for=expression>Expression:</label>
     <input id=expression value="x^2">
     <ag-fn be-observant='{
-        "operation": {"observe": "#operation", "on":"input", "vft":"value"},
-        "expression": {"observe": "#expression", "on": "input", "vft": "value"}
+        "operation":  {"observe":"#operation",  "on":"input", "vft":"value"},
+        "expression": {"observe":"#expression", "on":"input", "vft":"value"}
     }'><script nomodule>
         ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
     </script></ag-fn>
