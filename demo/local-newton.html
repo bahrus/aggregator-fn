@@ -9,18 +9,20 @@
     
     <label for=operation>Operation:</label>
     <input id=operation value=integrate>
-    <!-- pass down (p-d) input changes to operation property-->
-    <p-d on=input to=[-operation] m=1 init-val=value></p-d>
     <label for=expression>Expression:</label>
     <input id=expression value="x^2">
-    <p-d on=input to=[-expression] m=1 init-val=value></p-d>
-    <ag-fn -operation -expression><script nomodule>
+    <ag-fn be-observant='{
+        "operation": {"observe": "#operation", "on":"input", "vft":"value"},
+        "expression": {"observe": "#expression", "on": "input", "vft": "value"}
+    }'><script nomodule>
         ({operation, expression}) => `https://newton.now.sh/api/v2/${operation}/${encodeURI(expression)}`
     </script></ag-fn>
-    <p-d on=value-changed to=[-href] m=1 as=str-attr></p-d>
-    <k-fetch -href as=json></k-fetch>
-    <p-d on=fetch-complete to=[-object] m=1 val=detail></p-d>
-    <json-viewer -object></json-viewer>
+    <k-fetch as=json be-observant='{
+        "href": {"observe": "ag-fn", "vft": "value", "as": "str-attr"}
+    }'></k-fetch>
+    <json-viewer be-observant='{
+        "object": {"observe": "k-fetch", "on": "fetch-complete", "vfe": "detail"}
+    }'></json-viewer>
     
 
     <script type=importmap>
@@ -28,17 +30,17 @@
         "imports": {
             "xtal-element/": "../node_modules/xtal-element/",
             "trans-render/": "../node_modules/trans-render/",
-            "pass-down/" : "../node_modules/pass-down/",
+            "be-observant/": "../node_modules/be-observant/",
+            "be-decorated/": "../node_modules/be-decorated/",
             "on-to-me/": "../node_modules/on-to-me/",
-            "mut-obs/": "../node_modules/mut-obs/",
             "@power-elements/": "../node_modules/@power-elements/",
             "k-fetch/": "../node_modules/k-fetch/"
         }
     }
     </script>
     <script  type=module>
-        import '../ag-fn2.js';
-        import 'pass-down/p-d.js';
+        import '../ag-fn.js';
+        import 'be-observant/be-observant.js';
         import '@power-elements/json-viewer/json-viewer.js';
         import 'k-fetch/k-fetch.js';
     </script>
